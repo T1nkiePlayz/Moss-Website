@@ -2,6 +2,11 @@
 import Base from '../layouts/Base.astro';
 import { REPO } from '../data/site';
 const entries = [
+  { v: 'Unreleased', date: 'Coming next', tag: 'Next', items: [
+    'CurseForge content next to Modrinth, through a Supabase edge function or your own key.',
+    'Rate-limited, uncached CurseForge access that respects authors who disable third-party downloads.',
+    'Safer sign-in handling for invited users, and many hardening fixes across uploads, backups and undo.',
+  ] },
   { v: '0.1.0', date: 'October 2026', tag: 'First release', items: [
     'Create, start, stop, restart and kill Vanilla, Paper, Purpur, Folia, Fabric and Velocity servers.',
     'Servers run detached and are re-attached after a controller restart.',

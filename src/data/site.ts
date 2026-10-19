@@ -13,6 +13,7 @@ export const DOCS: DocPage[] = [
   { slug: 'getting-started', title: 'Getting started', group: 'Start', blurb: 'Install Moss, try dev mode, and run it as a service.' },
   { slug: 'configuration', title: 'Configuration', group: 'Start', blurb: 'Every flag, variable and the data layout.' },
   { slug: 'supabase', title: 'Sign-in with Supabase', group: 'Operate', blurb: 'Set up login, owners, invites and roles.' },
+  { slug: 'curseforge', title: 'CurseForge', group: 'Operate', blurb: 'Set up CurseForge, with limits and terms explained.' },
   { slug: 'runtimes', title: 'Runtimes', group: 'Operate', blurb: 'What you can run and how each runtime is verified.' },
   { slug: 'security', title: 'Security model', group: 'Operate', blurb: 'What Moss protects, and what it does not yet.' },
   { slug: 'architecture', title: 'Architecture', group: 'Reference', blurb: 'How servers survive controller restarts.' },

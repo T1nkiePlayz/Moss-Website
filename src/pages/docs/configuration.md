@@ -18,6 +18,9 @@ Flags and environment variables (flags win):
 | `SUPABASE_JWT_SECRET` | – | Only for legacy HS256-signed projects. |
 | `MOSS_OWNER_EMAILS` | – | Comma-separated emails that become owner on first verified sign-in. |
 | `MOSS_REQUIRE_VERIFIED_EMAIL` | `true` | Require a verified email before matching owner/invite. |
+| `CURSEFORGE_API_KEY` | – | Your own CurseForge key for direct access (secret; `.env.local`). Without it Moss uses the Supabase edge function, see [CurseForge setup](../curseforge/). |
+| `MOSS_CURSEFORGE_PROXY` | auto | Edge function URL, or `off` to disable CurseForge. |
+| `MOSS_CURSEFORGE_API_URL` | `https://api.curseforge.com` | API base for direct mode (https, or loopback for tests). |
 | `MOSS_DEV_RUNTIMES` | `false` | Expose the simulated server runtime (demos, tests). |
 | `RUST_LOG` | `moss=info` | Log filter. |
 

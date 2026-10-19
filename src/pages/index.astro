@@ -21,13 +21,13 @@ const features = [
 const shots = [
   { f: 'server', t: 'Server overview', d: 'Live CPU and memory, players, and the pulse timeline.' },
   { f: 'console', t: 'Live console', d: 'Shared by every viewer, with command history.' },
-  { f: 'plugins', t: 'Plugin catalogue', d: 'Only what is compatible with your runtime and version.' },
+  { f: 'plugins', t: 'Plugin catalogue', d: 'Modrinth and CurseForge, filtered to your runtime and version.' },
   { f: 'backups', t: 'Backups and schedules', d: 'Verified archives, retention that keeps your last good one.' },
 ];
 
 const faq = [
   ['Do I need an account on this website?', 'No. There is nothing to sign in to here. Moss runs on your own machine, and its sign-in uses a Supabase project that you create and control.'],
-  ['Does Moss phone home?', 'No telemetry. Moss contacts Mojang, PaperMC, Purpur, Fabric, Modrinth and Adoptium only to download what you ask for, and Supabase only to verify sign-in keys.'],
+  ['Does Moss phone home?', 'No telemetry. Moss contacts Mojang, PaperMC, Purpur, Fabric, Modrinth, CurseForge (if enabled) and Adoptium only to download what you ask for, and Supabase only to verify sign-in keys.'],
   ['Is it free?', 'Yes. Moss is open source under GPL-3.0-only.'],
   ['What does it run on?', 'Linux x86-64. Windows and macOS hosts are not supported. You manage it from any browser.'],
   ['Do I need Docker?', 'No. Moss is a single binary with SQLite. A container backend with resource limits is on the roadmap.'],
@@ -122,7 +122,7 @@ const faq = [
       <div class="head center">
         <span class="kicker">Runtimes</span>
         <h2>Only what works end to end</h2>
-        <p class="sub">A runtime is offered as installable only when it is verified from install to console. Plugins show for Paper-family servers, mods for Fabric, datapacks for Vanilla. Client-only mods are filtered out before you can click them.</p>
+        <p class="sub">A runtime is offered as installable only when it is verified from install to console. Plugins show for Paper-family servers, mods for Fabric, datapacks for Vanilla, from Modrinth and CurseForge. Client-only mods are filtered out before you can click them.</p>
       </div>
       <div class="chips">
         <span class="chip">Vanilla <small>stable</small></span>
