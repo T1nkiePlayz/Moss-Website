@@ -1,0 +1,193 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { REPO, url } from '../data/site';
+
+const features = [
+  { i: 'power', t: 'Servers outlive the controller', d: 'Games run detached and are re-attached by PID and start time. Restart or upgrade Moss mid-game; nobody gets kicked.' },
+  { i: 'undo', t: 'Undo for everything it touches', d: 'Editor saves, server.properties and plugin changes snapshot the previous files first. One click puts them back.' },
+  { i: 'plan', t: 'Change plans', d: 'Installing a plugin shows exactly which files will be added or replaced, dependencies included, before anything downloads.' },
+  { i: 'pulse', t: 'Pulse timeline', d: 'A 24-hour strip of starts, ready marks, crashes, restarts and backups. "What happened last night?" in one glance.' },
+  { i: 'heart', t: 'Evidence-backed health', d: 'No mystery score. Each finding shows its evidence and a one-click fix: install Java, back up now, accept the EULA.' },
+  { i: 'cup', t: 'Zero-setup Java', d: 'Moss downloads a checksum-verified Temurin runtime for the Java version each Minecraft release needs.' },
+  { i: 'box', t: 'Live, consistent backups', d: 'save-off, flush, archive, save-on, confirmed from the console. Checksummed tar.zst you can verify and restore as a new server.' },
+  { i: 'term', t: 'Real-time console', d: 'One log tailer per server feeds any number of viewers over WebSocket. ANSI colours render as text, never as HTML.' },
+  { i: 'keys', t: 'Roles and per-server grants', d: 'Owner, admin and user, plus manager, operator or viewer on each server. Enforced on every request.' },
+  { i: 'clock', t: 'Schedules that behave', d: 'Backups, restarts and commands on an interval or daily at a time with an explicit UTC offset. Missed runs execute once.' },
+  { i: 'shield', t: 'Hardened by default', d: 'Loopback bind, invite-only sign-in, symlink-proof file access, allow-listed downloads, strict CSP.' },
+  { i: 'cmd', t: 'Keyboard first', d: 'Press Ctrl or ⌘ + K to reach every page, server and action. Dark, light and high-contrast themes.' },
+];
+
+const shots = [
+  { f: 'server', t: 'Server overview', d: 'Live CPU and memory, players, and the pulse timeline.' },
+  { f: 'console', t: 'Live console', d: 'Shared by every viewer, with command history.' },
+  { f: 'plugins', t: 'Plugin catalogue', d: 'Only what is compatible with your runtime and version.' },
+  { f: 'backups', t: 'Backups and schedules', d: 'Verified archives, retention that keeps your last good one.' },
+];
+
+const faq = [
+  ['Do I need an account on this website?', 'No. There is nothing to sign in to here. Moss runs on your own machine, and its sign-in uses a Supabase project that you create and control.'],
+  ['Does Moss phone home?', 'No telemetry. Moss contacts Mojang, PaperMC, Purpur, Fabric, Modrinth and Adoptium only to download what you ask for, and Supabase only to verify sign-in keys.'],
+  ['Is it free?', 'Yes. Moss is open source under GPL-3.0-only.'],
+  ['What does it run on?', 'Linux x86-64. Windows and macOS hosts are not supported. You manage it from any browser.'],
+  ['Do I need Docker?', 'No. Moss is a single binary with SQLite. A container backend with resource limits is on the roadmap.'],
+  ['Is it ready for production?', 'It runs real servers today, but it is early. Formats and APIs may change, and there is no container isolation yet. Keep your own backups and put a TLS reverse proxy in front of it.'],
+];
+---
+<Base>
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow"><i></i>Open source · Linux · Minecraft Java</span>
+      <h1>Game servers that keep <em>growing</em>, quietly.</h1>
+      <p class="lead">A fast, local-first controller. One small binary, a polished web panel, and servers that survive everything except you pulling the plug.</p>
+      <div class="cta">
+        <a class="btn primary" href={url('/download/')}><Icon name="down" />Download</a>
+        <a class="btn" href={url('/docs/getting-started/')}>Read the docs</a>
+        <a class="btn" href={REPO} rel="noopener"><Icon name="gh" />GitHub</a>
+      </div>
+      <div class="install">
+        <code>MOSS_AUTH=dev ./moss serve</code>
+        <button type="button" data-copy="MOSS_AUTH=dev ./moss serve">Copy</button>
+      </div>
+      <div class="shot">
+        <div class="bar"><i></i><i></i><i></i></div>
+        <img src={url('/screenshots/overview.png')} alt="The Moss overview with host gauges and server cards" width="1440" height="814" fetchpriority="high" />
+      </div>
+      <div class="stats">
+        <div><b>1</b><span>binary, no Docker</span></div>
+        <div><b>~38 KB</b><span>UI on first load (gzip)</span></div>
+        <div><b>0</b><span>telemetry</span></div>
+        <div><b>GPL-3.0</b><span>open source</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap split">
+      <div>
+        <span class="kicker">The difference</span>
+        <h2>Kill the controller. Keep the game.</h2>
+        <p class="sub">Most panels own your server process, so restarting the panel restarts your world. Moss launches games on their own and finds them again afterwards.</p>
+        <ul class="ticks">
+          <li><span><b>Re-attached by PID and start time</b>, so a reused PID can never be mistaken for your server.</span></li>
+          <li><span><b>Console keeps working.</b> Input goes through a FIFO the game itself holds open.</span></li>
+          <li><span><b>Crashes are told apart from stops</b>, with exponential backoff and a crash-loop breaker.</span></li>
+        </ul>
+      </div>
+      <div class="term" role="img" aria-label="Terminal: the controller is killed with SIGKILL, the game server keeps running, and Moss re-attaches on restart">
+        <div class="t-bar"><i></i><i></i><i></i><span>survive.sh</span></div>
+        <pre><span class="l"><span class="d">$</span> moss serve</span>
+<span class="l"><span class="g">✓</span> Paper 1.21 ready · 3 players online</span>
+<span class="l"><span class="d">$</span> kill -9 $(pidof moss)   <span class="d"># the controller dies</span></span>
+<span class="l"><span class="y">!</span> panel offline · <span class="g">game still running, players still playing</span></span>
+<span class="l"><span class="d">$</span> moss serve</span>
+<span class="l"><span class="c">↻</span> re-attached to Paper (pid 48211), tailing console</span>
+<span class="l"><span class="g">✓</span> nothing was interrupted</span></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="block alt" id="features">
+    <div class="wrap">
+      <div class="head center">
+        <span class="kicker">Features</span>
+        <h2>Everything a server needs, nothing it doesn't</h2>
+        <p class="sub">Built around what goes wrong at 2 a.m.: crashes, bad updates, full disks, missing backups.</p>
+      </div>
+      <div class="grid">
+        {features.map((f) => (
+          <div class="card"><div class="ico"><Icon name={f.i} /></div><h3>{f.t}</h3><p>{f.d}</p></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="head center">
+        <span class="kicker">Tour</span>
+        <h2>A panel that looks the part</h2>
+        <p class="sub">Dark, light and high-contrast themes, keyboard navigation, and a layout that holds up down to a phone.</p>
+      </div>
+      <div class="gallery">
+        {shots.map((s) => (
+          <figure><img src={url(`/screenshots/${s.f}.png`)} alt={`${s.t} screenshot`} loading="lazy" width="1440" height="814" /><figcaption><b>{s.t}</b>{s.d}</figcaption></figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="block alt">
+    <div class="wrap">
+      <div class="head center">
+        <span class="kicker">Runtimes</span>
+        <h2>Only what works end to end</h2>
+        <p class="sub">A runtime is offered as installable only when it is verified from install to console. Plugins show for Paper-family servers, mods for Fabric, datapacks for Vanilla. Client-only mods are filtered out before you can click them.</p>
+      </div>
+      <div class="chips">
+        <span class="chip">Vanilla <small>stable</small></span>
+        <span class="chip">Paper <small>stable</small></span>
+        <span class="chip">Purpur <small>stable</small></span>
+        <span class="chip">Fabric <small>stable</small></span>
+        <span class="chip">Velocity <small>stable</small></span>
+        <span class="chip">Folia <small>experimental</small></span>
+        <span class="chip">Custom command <small>experimental</small></span>
+        <span class="chip planned">Forge <small>planned</small></span>
+        <span class="chip planned">NeoForge <small>planned</small></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="head">
+        <span class="kicker">Why Moss</span>
+        <h2>Where it differs from a typical panel</h2>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th></th><th>Moss</th><th>Typical panel</th></tr></thead>
+          <tbody>
+            <tr><td>Restart the controller</td><td class="y">Servers keep running</td><td class="n">Servers restart with it</td></tr>
+            <tr><td>Changed a config or plugin</td><td class="y">One-click undo</td><td class="n">Hope you kept a copy</td></tr>
+            <tr><td>Installing a plugin</td><td class="y">Reviewed plan, compatibility-filtered</td><td class="n">Pick a file and see</td></tr>
+            <tr><td>Backups</td><td class="y">Flushed, checksummed, verifiable</td><td class="n">Archive of whatever is on disk</td></tr>
+            <tr><td>Setup</td><td class="y">One binary, SQLite</td><td class="n">Database, queue, containers</td></tr>
+            <tr><td>Your data</td><td class="y">On your machine only</td><td class="n">Often a hosted backend</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="block alt">
+    <div class="wrap" style="max-width:820px">
+      <div class="head">
+        <span class="kicker">Security, honestly</span>
+        <h2>Built to be exposed carefully</h2>
+        <p class="sub">Sign-in is not the only line of defence. Moss binds to loopback by default, checks permissions on every REST call, WebSocket and event stream, confines file access to each server, and allow-lists every download.</p>
+      </div>
+      <div class="callout"><b>No isolation yet.</b> Game servers and the plugins they load run as the same OS user as Moss. Run Moss as a dedicated unprivileged user, treat plugins as code you trust, and put a TLS reverse proxy in front of it. <a href={url('/docs/security/')}>Read the security model</a>.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="head center"><span class="kicker">FAQ</span><h2>Questions</h2></div>
+      <div class="faq">
+        {faq.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="wrap">
+      <h2>Try it in a minute</h2>
+      <p class="sub" style="margin:0 auto 26px">Download the binary, run it in dev mode, and create your first server. No account needed.</p>
+      <div class="cta">
+        <a class="btn primary" href={url('/download/')}><Icon name="down" />Download Moss</a>
+        <a class="btn" href={url('/docs/getting-started/')}>Getting started</a>
+      </div>
+    </div>
+  </section>
+</Base>

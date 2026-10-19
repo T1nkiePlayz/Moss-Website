@@ -1,0 +1,21 @@
+name: Website issue
+description: A broken link, typo, unclear docs or a layout problem
+labels: [website]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page
+      placeholder: /docs/supabase/
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What is wrong or missing?
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and device

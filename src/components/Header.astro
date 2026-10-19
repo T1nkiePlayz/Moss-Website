@@ -1,0 +1,22 @@
+---
+import { NAV, REPO, url } from '../data/site';
+const path = Astro.url.pathname;
+const cur = (href: string) => { const h = url(href); return href === '/' ? path === h : path.startsWith(h); };
+---
+<header class="site-header">
+  <div class="wrap nav">
+    <a class="brand" href={url('/')}><img src={url('/moss-logo.png')} alt="" width="30" height="30" />Moss</a>
+    <nav class="nav-links" aria-label="Main">
+      {NAV.map((n) => <a href={url(n.href)} aria-current={cur(n.href) ? 'page' : undefined}>{n.label}</a>)}
+      <a href={REPO} rel="noopener">GitHub</a>
+      <button class="theme-btn" id="theme" type="button" aria-label="Toggle colour theme" title="Toggle theme">◐</button>
+    </nav>
+    <details class="menu">
+      <summary>Menu</summary>
+      <nav aria-label="Mobile">
+        {NAV.map((n) => <a href={url(n.href)}>{n.label}</a>)}
+        <a href={REPO} rel="noopener">GitHub</a>
+      </nav>
+    </details>
+  </div>
+</header>

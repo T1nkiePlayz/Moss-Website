@@ -1,0 +1,14 @@
+---
+import Base from '../../layouts/Base.astro';
+import { DOCS, url } from '../../data/site';
+---
+<Base title="Documentation" description="Install, configure and operate Moss, the open-source Minecraft Java server controller.">
+  <div class="wrap page">
+    <span class="kicker">Documentation</span>
+    <h2 style="font-size:clamp(32px,5vw,48px);margin-bottom:10px">Everything about running Moss</h2>
+    <p class="sub">From a first dev-mode run to a production install behind TLS.</p>
+    <div class="grid" style="margin-top:36px">
+      {DOCS.map((d) => <a class="card" href={url(`/docs/${d.slug}/`)} style="color:inherit;text-decoration:none"><h3>{d.title}</h3><p>{d.blurb}</p></a>)}
+    </div>
+  </div>
+</Base>

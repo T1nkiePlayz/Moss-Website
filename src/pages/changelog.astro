@@ -1,0 +1,34 @@
+---
+import Base from '../layouts/Base.astro';
+import { REPO } from '../data/site';
+const entries = [
+  { v: '0.1.0', date: 'October 2026', tag: 'First release', items: [
+    'Create, start, stop, restart and kill Vanilla, Paper, Purpur, Folia, Fabric and Velocity servers.',
+    'Servers run detached and are re-attached after a controller restart.',
+    'Live shared console, file manager and form-based server.properties editor.',
+    'Modrinth content with compatibility filtering, change plans, updates and pinning.',
+    'Undo snapshots for edits and content changes.',
+    'Verified tar.zst backups, in-place or new-server restore, interval and daily schedules.',
+    'Supabase sign-in with owner, admin and user roles plus per-server grants.',
+    'Managed Temurin Java installs, health findings and the pulse timeline.',
+  ] },
+];
+---
+<Base title="Changelog" description="What changed in each Moss release.">
+  <div class="wrap page">
+    <div class="prose">
+      <span class="kicker">Changelog</span>
+      <h1>Release notes</h1>
+      <p class="lede">Full notes live on <a href={`${REPO}/releases`} rel="noopener">GitHub Releases</a>. This page keeps the highlights.</p>
+      <div class="timeline">
+        {entries.map((e) => (
+          <article>
+            <h2 style="margin:0 0 6px;padding:0">v{e.v} <span class="tag">{e.tag}</span></h2>
+            <p style="margin:0 0 10px;color:var(--faint);font-size:14px">{e.date}</p>
+            <ul>{e.items.map((i) => <li>{i}</li>)}</ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</Base>

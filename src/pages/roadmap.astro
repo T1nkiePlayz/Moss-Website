@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import { REPO } from '../data/site';
+const lanes = [
+  { tag: 'Now', cls: '', t: 'Hardening', items: ['More tests around restore and undo', 'Install and upgrade paths', 'Better readiness detection for modded servers'] },
+  { tag: 'Next', cls: 'next', t: 'Isolation and reach', items: ['Container backend (Docker or Podman) with resource limits', 'CurseForge provider beside Modrinth', 'Remote backup destinations', 'Staged updates with a readiness gate'] },
+  { tag: 'Later', cls: 'later', t: 'Bigger ideas', items: ['Forge and NeoForge', 'Event-driven workflows', 'Multi-node', 'Public status pages', 'Long-term metrics'] },
+];
+---
+<Base title="Roadmap" description="Where Moss is heading.">
+  <div class="wrap page">
+    <div class="prose" style="max-width:none">
+      <span class="kicker">Roadmap</span>
+      <h1>Where Moss is heading</h1>
+      <p class="lede">Plans change with feedback. The detailed engineering plan is in the <a href={`${REPO}/blob/main/docs/PLAN.md`} rel="noopener">repository</a>; ideas and votes go in <a href={`${REPO}/issues`} rel="noopener">issues</a>.</p>
+    </div>
+    <div class="lanes">
+      {lanes.map((l) => <div class="lane"><span class={`tag ${l.cls}`}>{l.tag}</span><h3>{l.t}</h3><ul>{l.items.map((i) => <li>{i}</li>)}</ul></div>)}
+    </div>
+  </div>
+</Base>

@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Problem with Moss itself
+    url: https://github.com/T1nkiePlayz/Moss/issues/new/choose
+    about: This repository is only the website. Report Moss bugs and requests there.

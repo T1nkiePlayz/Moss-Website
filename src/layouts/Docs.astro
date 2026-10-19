@@ -1,0 +1,28 @@
+---
+import Base from './Base.astro';
+import { DOCS, url } from '../data/site';
+interface Props { frontmatter?: { title: string; description?: string; slug?: string }; title?: string; description?: string; slug?: string }
+const fm = Astro.props.frontmatter ?? Astro.props;
+const slug = fm.slug ?? '';
+const i = DOCS.findIndex((d) => d.slug === slug);
+const prev = i > 0 ? DOCS[i - 1] : undefined;
+const next = i >= 0 && i < DOCS.length - 1 ? DOCS[i + 1] : undefined;
+const groups = [...new Set(DOCS.map((d) => d.group))];
+---
+<Base title={fm.title} description={fm.description}>
+  <div class="wrap docs">
+    <aside class="side" aria-label="Documentation">
+      {groups.map((g) => (<>
+        <h5>{g}</h5>
+        {DOCS.filter((d) => d.group === g).map((d) => <a href={url(`/docs/${d.slug}/`)} aria-current={d.slug === slug ? 'page' : undefined}>{d.title}</a>)}
+      </>))}
+    </aside>
+    <article class="prose">
+      <slot />
+      <nav class="pager" aria-label="Pages">
+        {prev && <a href={url(`/docs/${prev.slug}/`)}><small>Previous</small>{prev.title}</a>}
+        {next && <a href={url(`/docs/${next.slug}/`)}><small>Next</small>{next.title}</a>}
+      </nav>
+    </article>
+  </div>
+</Base>

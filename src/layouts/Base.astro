@@ -1,0 +1,57 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { url } from '../data/site';
+interface Props { title?: string; description?: string }
+const { title, description = 'Moss is a fast, local-first controller for Minecraft Java servers: one small binary, a polished web panel, and servers that survive everything except you pulling the plug.' } = Astro.props;
+const full = title ? `${title} · Moss` : 'Moss: game servers that keep growing, quietly';
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const og = new URL(url('/og.png'), Astro.site).href;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{full}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
+    <link rel="apple-touch-icon" href={url('/moss-logo.png')} />
+    <link rel="manifest" href={url('/site.webmanifest')} />
+    <meta name="theme-color" content="#090d0b" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={full} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={og} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>
+      try { var t = localStorage.getItem('moss-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <Header />
+    <main id="main"><slot /></main>
+    <Footer />
+    <script is:inline>
+      document.getElementById('theme')?.addEventListener('click', function () {
+        var el = document.documentElement;
+        var dark = el.dataset.theme ? el.dataset.theme === 'dark' : !matchMedia('(prefers-color-scheme: light)').matches;
+        var next = dark ? 'light' : 'dark';
+        el.dataset.theme = next;
+        try { localStorage.setItem('moss-theme', next); } catch (e) {}
+      });
+      document.querySelectorAll('[data-copy]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          var text = b.getAttribute('data-copy') || '';
+          (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(function () {
+            var old = b.textContent; b.textContent = 'Copied'; setTimeout(function () { b.textContent = old; }, 1400);
+          }).catch(function () {});
+        });
+      });
+    </script>
+  </body>
+</html>

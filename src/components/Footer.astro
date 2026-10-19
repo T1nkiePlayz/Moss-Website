@@ -1,0 +1,17 @@
+---
+import { REPO, SITE_REPO, VERSION, url } from '../data/site';
+---
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a class="brand" href={url('/')}><img src={url('/moss-logo.png')} alt="" width="30" height="30" />Moss</a>
+        <p style="max-width:34ch;margin:12px 0 0">Game servers that keep growing, quietly. An open-source controller for Minecraft Java servers.</p>
+      </div>
+      <div><h4>Product</h4><a href={url('/download/')}>Download</a><a href={url('/changelog/')}>Changelog</a><a href={url('/roadmap/')}>Roadmap</a></div>
+      <div><h4>Learn</h4><a href={url('/docs/getting-started/')}>Getting started</a><a href={url('/docs/supabase/')}>Sign-in setup</a><a href={url('/docs/api/')}>HTTP API</a></div>
+      <div><h4>Project</h4><a href={REPO} rel="noopener">Moss on GitHub</a><a href={SITE_REPO} rel="noopener">This website</a><a href={url('/privacy/')}>Privacy</a><a href={url('/terms/')}>Terms</a></div>
+    </div>
+    <p class="legal">Moss v{VERSION} · GPL-3.0-only. Moss is not affiliated with Mojang or Microsoft; "Minecraft" is a trademark of Mojang Synergies AB.</p>
+  </div>
+</footer>

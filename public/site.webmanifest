@@ -1,0 +1,1 @@
+{ "name": "Moss", "short_name": "Moss", "icons": [{ "src": "moss-logo.png", "sizes": "256x256", "type": "image/png" }], "theme_color": "#090d0b", "background_color": "#090d0b", "display": "browser" }
