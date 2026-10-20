@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import { REPO, VERSION, url } from '../data/site';
-const verify = `sha256sum -c SHA256SUMS.txt
+const verify = `sha256sum -c SHA256SUMS.txt      # macOS: shasum -a 256 -c SHA256SUMS.txt
 gh attestation verify moss-*-linux-x86_64.tar.gz --repo T1nkiePlayz/Moss
 tar xzf moss-*-linux-x86_64.tar.gz && cd moss-*-linux-x86_64
 MOSS_AUTH=dev ./moss serve`;
@@ -10,23 +10,23 @@ const src = `git clone ${REPO} && cd Moss
 (cd web && npm ci && npm run build)
 cargo build --release`;
 ---
-<Base title="Download" description="Download Moss for Linux x86-64, verify it, and run it.">
+<Base title="Download" description="Download Moss for Linux or macOS, verify it, and run it.">
   <div class="wrap page">
     <span class="kicker">Download</span>
     <h2 style="font-size:clamp(32px,5vw,48px);margin-bottom:10px">Get Moss</h2>
-    <p class="sub">Linux x86-64. A single binary with the web panel built in.</p>
+    <p class="sub">Linux (x86-64) and macOS (Apple silicon and Intel). A single binary with the web panel built in.</p>
     <div class="dl">
       <div class="card">
         <div class="ico"><Icon name="down" /></div>
         <h3>Release tarball</h3>
-        <p>The binary, a systemd unit and an example environment file. Every release ships SHA256SUMS and a GitHub build attestation.</p>
+        <p>One tarball per platform: <code>linux-x86_64</code>, <code>macos-aarch64</code> and <code>macos-x86_64</code>, each with the binary, service files and an example environment file. Releases also ship SHA256SUMS, an <code>install.sh</code> that verifies the checksum, and a Homebrew formula.</p>
         <p style="margin-top:18px"><a class="btn primary" href={`${REPO}/releases/latest`} rel="noopener">Latest release on GitHub</a></p>
       </div>
       <div class="card">
         <div class="ico"><Icon name="box" /></div>
         <h3>Build from source</h3>
         <p>Needs stable Rust and Node.js LTS. The binary embeds the built UI.</p>
-        <p style="margin-top:18px"><a class="btn" href={url('/docs/getting-started/')}>Getting started</a></p>
+        <p style="margin-top:18px"><a class="btn" href={url('/docs/getting-started/')}>Getting started</a> <a class="btn" href={url('/docs/macos/')}>macOS notes</a></p>
       </div>
     </div>
     <div class="prose" style="margin-top:48px;max-width:none">

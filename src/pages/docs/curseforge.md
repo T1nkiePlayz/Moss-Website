@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/Docs.astro
-title: CurseForge
-description: Add CurseForge content to Moss with the Supabase edge function or your own key, and how rate limits and terms are handled.
+title: "CurseForge"
+description: "Add CurseForge content to Moss with the Supabase edge function or your own key, and how rate limits and terms are handled."
 slug: curseforge
 ---
 

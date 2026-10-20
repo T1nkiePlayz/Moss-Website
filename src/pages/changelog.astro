@@ -2,10 +2,16 @@
 import Base from '../layouts/Base.astro';
 import { REPO } from '../data/site';
 const entries = [
-  { v: 'Unreleased', date: 'Coming next', tag: 'Next', items: [
+  { v: '0.2.0', date: 'Release candidate', tag: 'Next', items: [
+    'macOS support: Apple silicon and Intel builds, launchd service file, Homebrew formula and an install script.',
+    'Full mod support: jar inspection, compatibility checks, enable/disable, identify unknown files, update-all, and a Minecraft version upgrade assistant.',
+    'Quilt, NeoForge and Forge runtimes; modpack import (.mrpack and CurseForge) and .mrpack export.',
     'CurseForge content next to Modrinth, through a Supabase edge function or your own key.',
-    'Rate-limited, uncached CurseForge access that respects authors who disable third-party downloads.',
-    'Safer sign-in handling for invited users, and many hardening fixes across uploads, backups and undo.',
+    'Backups: locks, per-world listing, restore preview and selective restore; schedules with IANA time zones.',
+    'Notification inbox with Discord or generic webhooks; long-term metrics; redacted support bundle.',
+    'Per-server memory, CPU and process limits on Linux (cgroup v2); reinstall and repair; safer Java installs.',
+    'Setup-token ownership claim, optional MFA policy, API tokens and login throttling.',
+    'Modular backend with numbered migrations, an OpenAPI document, an end-to-end test and automated accessibility checks.',
   ] },
   { v: '0.1.0', date: 'October 2026', tag: 'First release', items: [
     'Create, start, stop, restart and kill Vanilla, Paper, Purpur, Folia, Fabric and Velocity servers.',

@@ -15,6 +15,10 @@ const features = [
   { i: 'keys', t: 'Roles and per-server grants', d: 'Owner, admin and user, plus manager, operator or viewer on each server. Enforced on every request.' },
   { i: 'clock', t: 'Schedules that behave', d: 'Backups, restarts and commands on an interval or daily at a time with an explicit UTC offset. Missed runs execute once.' },
   { i: 'shield', t: 'Hardened by default', d: 'Loopback bind, invite-only sign-in, symlink-proof file access, allow-listed downloads, strict CSP.' },
+  { i: 'plan', t: 'Compatibility checks', d: 'Moss reads every jar: missing dependencies, version ranges, duplicates, wrong loader or game version, client-only mods. Findings come with a fix button.' },
+  { i: 'undo', t: 'Version upgrades', d: 'Pick a Minecraft version and see per mod whether a build exists before anything changes. Back up, upgrade, roll back if needed.' },
+  { i: 'box', t: 'Modpacks in and out', d: 'Import .mrpack and CurseForge packs into a new or existing server, and export your content as .mrpack.' },
+  { i: 'heart', t: 'Notifications', d: 'An inbox and an optional Discord or webhook alert for crashes, failed backups and a full disk.' },
   { i: 'cmd', t: 'Keyboard first', d: 'Press Ctrl or ⌘ + K to reach every page, server and action. Dark, light and high-contrast themes.' },
 ];
 
@@ -29,7 +33,7 @@ const faq = [
   ['Do I need an account on this website?', 'No. There is nothing to sign in to here. Moss runs on your own machine, and its sign-in uses a Supabase project that you create and control.'],
   ['Does Moss phone home?', 'No telemetry. Moss contacts Mojang, PaperMC, Purpur, Fabric, Modrinth, CurseForge (if enabled) and Adoptium only to download what you ask for, and Supabase only to verify sign-in keys.'],
   ['Is it free?', 'Yes. Moss is open source under GPL-3.0-only.'],
-  ['What does it run on?', 'Linux x86-64. Windows and macOS hosts are not supported. You manage it from any browser.'],
+  ['What does it run on?', 'Linux (x86-64) and macOS 13+ (Apple silicon and Intel). Windows hosts are not supported. You manage it from any browser. Per-server memory, CPU and process limits are Linux only.'],
   ['Do I need Docker?', 'No. Moss is a single binary with SQLite. A container backend with resource limits is on the roadmap.'],
   ['Is it ready for production?', 'It runs real servers today, but it is early. Formats and APIs may change, and there is no container isolation yet. Keep your own backups and put a TLS reverse proxy in front of it.'],
 ];
@@ -37,7 +41,7 @@ const faq = [
 <Base>
   <section class="hero">
     <div class="wrap">
-      <span class="eyebrow"><i></i>Open source · Linux · Minecraft Java</span>
+      <span class="eyebrow"><i></i>Open source · Linux and macOS · Minecraft Java</span>
       <h1>Game servers that keep <em>growing</em>, quietly.</h1>
       <p class="lead">A fast, local-first controller. One small binary, a polished web panel, and servers that survive everything except you pulling the plug.</p>
       <div class="cta">
@@ -54,7 +58,7 @@ const faq = [
         <img src={url('/screenshots/overview.png')} alt="The Moss overview with host gauges and server cards" width="1440" height="814" fetchpriority="high" />
       </div>
       <div class="stats">
-        <div><b>1</b><span>binary, no Docker</span></div>
+        <div><b>2</b><span>platforms: Linux and macOS</span></div>
         <div><b>~38 KB</b><span>UI on first load (gzip)</span></div>
         <div><b>0</b><span>telemetry</span></div>
         <div><b>GPL-3.0</b><span>open source</span></div>
@@ -129,11 +133,12 @@ const faq = [
         <span class="chip">Paper <small>stable</small></span>
         <span class="chip">Purpur <small>stable</small></span>
         <span class="chip">Fabric <small>stable</small></span>
+        <span class="chip">Quilt <small>stable</small></span>
+        <span class="chip">NeoForge <small>stable</small></span>
+        <span class="chip">Forge <small>experimental</small></span>
         <span class="chip">Velocity <small>stable</small></span>
         <span class="chip">Folia <small>experimental</small></span>
         <span class="chip">Custom command <small>experimental</small></span>
-        <span class="chip planned">Forge <small>planned</small></span>
-        <span class="chip planned">NeoForge <small>planned</small></span>
       </div>
     </div>
   </section>

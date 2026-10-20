@@ -10,9 +10,11 @@ export const url = (p = '/') => {
 
 export interface DocPage { slug: string; title: string; group: string; blurb: string }
 export const DOCS: DocPage[] = [
-  { slug: 'getting-started', title: 'Getting started', group: 'Start', blurb: 'Install Moss, try dev mode, and run it as a service.' },
+  { slug: 'getting-started', title: 'Getting started', group: 'Start', blurb: 'Install Moss on Linux or macOS, try dev mode, run it as a service.' },
   { slug: 'configuration', title: 'Configuration', group: 'Start', blurb: 'Every flag, variable and the data layout.' },
-  { slug: 'supabase', title: 'Sign-in with Supabase', group: 'Operate', blurb: 'Set up login, owners, invites and roles.' },
+  { slug: 'macos', title: 'macOS', group: 'Start', blurb: 'Apple silicon and Intel: install, Gatekeeper, launchd, Java.' },
+  { slug: 'supabase', title: 'Sign-in with Supabase', group: 'Operate', blurb: 'Login, owners, setup token, MFA, API tokens and roles.' },
+  { slug: 'mods', title: 'Mods and compatibility', group: 'Operate', blurb: 'Jar checks, updates, upgrades and modpacks.' },
   { slug: 'curseforge', title: 'CurseForge', group: 'Operate', blurb: 'Set up CurseForge, with limits and terms explained.' },
   { slug: 'runtimes', title: 'Runtimes', group: 'Operate', blurb: 'What you can run and how each runtime is verified.' },
   { slug: 'security', title: 'Security model', group: 'Operate', blurb: 'What Moss protects, and what it does not yet.' },

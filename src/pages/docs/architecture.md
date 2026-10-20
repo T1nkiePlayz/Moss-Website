@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/Docs.astro
-title: Architecture
-description: How Moss is built, and how game servers survive controller restarts.
+title: "Architecture"
+description: "How Moss is built, and how game servers survive controller restarts."
 slug: architecture
 ---
 
@@ -15,8 +15,10 @@ Browser ── HTTPS ─▶ reverse proxy ─▶ moss serve ─┬─ Supabase J
                                                  ├─ Operation engine: persisted state machine, locks, cancellation, SSE feed
                                                  ├─ Lifecycle: detached processes, monitor loop, restart policy, reconcile on boot
                                                  ├─ Console hub: one log tailer per server → N WebSocket viewers
-                                                 ├─ Providers: Mojang · PaperMC Fill · Purpur · Fabric Meta · Modrinth · Adoptium
-                                                 └─ Backups (tar.zst) · Undo snapshots · Scheduler · Health findings
+                                                 ├─ Providers: Mojang · PaperMC Fill · Purpur · Fabric/Quilt Meta · Forge/NeoForge maven · Modrinth · CurseForge · Adoptium
+                                                 ├─ Platform layer: Linux (/proc, cgroup v2) or macOS (libproc, sysctl)
+                                                 ├─ Content: jar inspection, compatibility checks, change plans, modpacks, version upgrades
+                                                 └─ Backups (tar.zst) · Undo snapshots · Scheduler · Notifications · Metrics history · Health findings
 ```
 
 ## Servers outlive the controller
@@ -54,3 +56,22 @@ Before Moss changes a file (editor save, `server.properties`, plugin install/rep
 ## Not yet built
 
 Container isolation (Docker/Podman backend), Forge/NeoForge, CurseForge, event workflows, multi-node. See [the plan](https://github.com/T1nkiePlayz/Moss/blob/main/docs/PLAN.md).
+
+## Code layout
+
+The backend is organised by responsibility, each module with a `//!` doc at the top:
+
+| Module | Owns |
+|---|---|
+| `platform/` | Everything OS specific: process identity and usage, host stats, disk, Java discovery, cgroup limits (Linux). Nothing else reads `/proc`. |
+| `lifecycle/` | Launch, stop/kill/restart, exit handling and restart policy, the supervision and sampling loops, boot reconciliation. |
+| `api/` | The router (one list of routes) and thin handlers per area. |
+| `auth/` | JWT verification, provisioning, RBAC, API tokens, setup token, MFA policy, throttling. |
+| `content/`, `providers/`, `jars/` | Catalogue search, change plans, install/update/upgrade, modpacks; Modrinth and CurseForge clients; jar metadata and compatibility rules. |
+| `backups/` | Archive format, create/prune, safety backups, preview, restore and swap. |
+| `notify/`, `history.rs` | Notifications and webhooks; hourly metric roll-ups. |
+| `db/` | SQLite access and numbered migrations (`db/migrations/NNNN_name.sql`). |
+
+## Platform differences
+
+Linux reads `/proc` for process and host numbers and, when the service unit delegates a cgroup subtree (`Delegate=yes`), enforces per-server memory, CPU and process limits and detects OOM kills. macOS uses libproc and sysctl; limits are not enforceable there and are reported as such. Process identity is PID plus start time on both, which is what makes re-attaching after a controller restart safe.

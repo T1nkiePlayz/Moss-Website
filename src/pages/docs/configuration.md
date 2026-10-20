@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/Docs.astro
-title: Configuration
-description: Every Moss flag and environment variable, plus the data directory layout.
+title: "Configuration"
+description: "Every Moss flag and environment variable, plus the data directory layout."
 slug: configuration
 ---
 
@@ -18,10 +18,13 @@ Flags and environment variables (flags win):
 | `SUPABASE_JWT_SECRET` | – | Only for legacy HS256-signed projects. |
 | `MOSS_OWNER_EMAILS` | – | Comma-separated emails that become owner on first verified sign-in. |
 | `MOSS_REQUIRE_VERIFIED_EMAIL` | `true` | Require a verified email before matching owner/invite. |
+| `MOSS_REQUIRE_MFA` | `off` | `off`, `admins` or `all`: require an MFA (aal2) session. |
+| `MOSS_TRUST_PROXY` | `false` | Read the client address from `X-Forwarded-For` (only behind a proxy). |
+| `MOSS_ALLOW_PRIVATE_WEBHOOKS` | `false` | Let notification webhooks resolve to private addresses (still HTTPS only). |
 | `CURSEFORGE_API_KEY` | – | Your own CurseForge key for direct access (secret; `.env.local`). Without it Moss uses the Supabase edge function, see [CurseForge setup](../curseforge/). |
 | `MOSS_CURSEFORGE_PROXY` | auto | Edge function URL, or `off` to disable CurseForge. |
 | `MOSS_CURSEFORGE_API_URL` | `https://api.curseforge.com` | API base for direct mode (https, or loopback for tests). |
 | `MOSS_DEV_RUNTIMES` | `false` | Expose the simulated server runtime (demos, tests). |
 | `RUST_LOG` | `moss=info` | Log filter. |
 
-Data layout: `moss.sqlite`, `servers/<id>/` (game files; Moss metadata in `.moss/`), `backups/<server-id>/<backup-id>.tar.zst`, `java/<major>/`, `removed/` (directories kept on delete/restore), `tmp/` (cleared on start).
+Data layout: `moss.sqlite`, `servers/<id>/` (game files; Moss metadata in `.moss/`), `backups/<server-id>/<backup-id>.tar.zst`, `java/<major>/`, `removed/` (directories kept on delete/restore), `tmp/` (cleared on start), `setup-token` (until ownership is claimed).

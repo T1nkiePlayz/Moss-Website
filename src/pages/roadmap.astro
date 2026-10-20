@@ -2,9 +2,9 @@
 import Base from '../layouts/Base.astro';
 import { REPO } from '../data/site';
 const lanes = [
-  { tag: 'Now', cls: '', t: 'Hardening', items: ['More tests around restore and undo', 'Install and upgrade paths', 'Better readiness detection for modded servers'] },
-  { tag: 'Next', cls: 'next', t: 'Isolation and reach', items: ['Container backend (Docker or Podman) with resource limits', 'Remote backup destinations', 'Staged updates with a readiness gate'] },
-  { tag: 'Later', cls: 'later', t: 'Bigger ideas', items: ['Forge and NeoForge', 'Event-driven workflows', 'Multi-node', 'Public status pages', 'Long-term metrics'] },
+  { tag: 'Now', cls: '', t: 'Hardening', items: ['More recovery tooling (a recovery CLI)', 'Paper config editors with history', 'Release candidates on Linux and macOS'] },
+  { tag: 'Next', cls: 'next', t: 'Isolation and safe updates', items: ['Container backend (Docker or Podman) with real resource and network limits', 'Staged updates with a health-gated promotion', 'Remote backup destinations', 'Pack diff and sandboxed modded installers'] },
+  { tag: 'Later', cls: 'later', t: 'Bigger ideas', items: ['Theme editor and saved views', 'Desktop shell', 'Event workflows and multi-node', 'Public status pages', 'Other games'] },
 ];
 ---
 <Base title="Roadmap" description="Where Moss is heading.">
