@@ -21,6 +21,10 @@ export const DOCS: DocPage[] = [
   { slug: 'recovery', title: 'Recovery', group: 'Operate', blurb: 'Locked out, stuck jobs, integrity checks.' },
   { slug: 'security', title: 'Security model', group: 'Operate', blurb: 'What Moss protects, and what it does not.' },
   { slug: 'threat-model', title: 'Threat model', group: 'Reference', blurb: 'Assets, attackers and mitigations in detail.' },
+  { slug: 'webhooks', title: 'Event webhooks', group: 'Operate', blurb: 'Signed outbound events and how to verify them.' },
+  { slug: 'desktop', title: 'Desktop app', group: 'Operate', blurb: 'The desktop shell: what it does and its current status.' },
+  { slug: 'security-review', title: 'Security review', group: 'Reference', blurb: 'Findings and fixes from the internal review.' },
+  { slug: 'api-policy', title: 'API policy', group: 'Reference', blurb: 'What is frozen and what counts as a breaking change.' },
   { slug: 'architecture', title: 'Architecture', group: 'Reference', blurb: 'How servers survive controller restarts.' },
   { slug: 'api', title: 'HTTP API', group: 'Reference', blurb: 'The REST, WebSocket and SSE reference.' },
 ];

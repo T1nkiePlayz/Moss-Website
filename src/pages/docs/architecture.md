@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/Docs.astro
 title: "Architecture"
-description: "How servers survive controller restarts and how the pieces fit."
+description: "How servers survive controller restarts."
 slug: architecture
 ---
 
@@ -46,9 +46,9 @@ What the container is: `run --detach --name moss-<serverid>`, one bind mount (th
 - **Re-attach is by container name + inspect.** The database records that the current run is in a container (`in_container`), so a mode change only applies on the next start. On boot `reconcile` inspects `moss-<id>`: running means re-attach and resume tailing, exited or missing means the normal exit path (exit code and `OOMKilled` from inspect, then `rm`). If the engine cannot answer, the server is kept as running with an explanatory detail: an unreachable daemon is never read as a crash.
 - **Liveness and stats are batched.** The supervision loop makes one `ps --filter label=moss.managed=true` call every two seconds for all container servers, and the sampler one `stats --no-stream` for all of them, feeding the usual metrics pipeline (CPU percent of one core, memory without page cache).
 - **Stop** sends `stop`/`end` to the console, waits, then `docker stop --time 15` and finally `kill`; **kill** is `docker kill`. Crash detection, backoff, the crash-loop breaker and notifications are shared with process mode.
-- **Network:** only the game port is published, as `<port>:<port>/tcp` so the port in the UI is the real in-game port (server.properties and velocity.toml need no change). UDP ports of plugins (Geyser, voice chat) are not published. Outbound traffic from the server is NOT restricted: Docker's default bridge network is used, because an `--internal` network cannot publish ports. A game server in a container can still reach the internet and the host's other services reachable from the bridge.
+- **Network:** the game port is published as `<port>:<port>/tcp` so the port in the UI is the real in-game port (server.properties and velocity.toml need no change). A per-server list of extra ports (TCP or UDP, 1024-65535, at most 8, never another Moss server's port) is published the same way for plugins such as Simple Voice Chat or Geyser (UDP 19132). Two network modes: `open` (default) uses Docker's default bridge, so the server can reach the internet and anything reachable from the bridge; `game-only` runs on `moss-gameonly`, a user-defined bridge Moss creates idempotently with `com.docker.network.bridge.enable_ip_masquerade=false` (an existing network of that name without the option is refused, never reused) and `--dns=192.0.2.1` (unroutable). Published ports still work through DNAT and conntrack, but a new outbound connection leaves with the container's private address, which nothing routes back, so it cannot reach the internet. Limits: containers on that bridge and the host itself (the bridge gateway) remain reachable, so host services bound to all interfaces are still exposed to the server; online-mode servers cannot reach Mojang's session servers (use it behind a proxy that authenticates, or in offline mode); Podman is refused with a clear message because Moss does not know a verified equivalent (an `--internal` network cannot publish ports); if the network cannot be created the server does not start (never a fallback to `open`) and a critical health finding is raised. An unknown stored mode is treated as `game-only`.
 - **What this is not:** the server directory (including `.moss/`) is writable by the game, exactly as in process mode; the container shares the host kernel; `DOCKER_HOST` must point at a local engine (container PIDs and bind mounts are meaningless otherwise). Rootful Docker means anyone who can reach the Docker socket is root: prefer rootless Podman.
-- **Installers** (Forge, NeoForge, Quilt) for a container-mode server run in a short-lived `--rm` container with the same single mount and hardening (default network, since installers download libraries); the installer jar is placed in `.moss/` for the run.
+- **Installers** (Forge, NeoForge, Quilt) for a container-mode server run in a short-lived `--rm` container with the same single mount and hardening (default network, since installers download libraries, regardless of the server's network mode); the installer jar is placed in `.moss/` for the run.
 
 Verified only against the stub engine and a fake: no Docker or Podman was available when this was built.
 
@@ -71,7 +71,7 @@ Before Moss changes a file (editor save, `server.properties`, plugin install/rep
 
 ## Not yet built
 
-Event workflows, multi-node. See [PLAN.md](https://github.com/T1nkiePlayz/Moss/blob/main/docs/PLAN.md).
+Event workflows, multi-node, extensions. See the roadmap in the README.
 
 ## Code layout
 
@@ -89,7 +89,18 @@ The backend is organised by responsibility, each module with a `//!` doc at the 
 | `backups/remote/` | Backup destinations: folder and hand-written S3 (SigV4, streamed multipart) drivers, validators, the 0600 secrets file, upload/fetch/retention jobs, destination self-test. Credentials live only in `<data>/backup-secrets.json`; they are never in SQLite, the support bundle or API responses. Outbound S3 traffic uses the notify SSRF guard (resolve once, pin the address, no redirects). |
 | `backups/staged/` | Promote-after-compare restore: extract to `servers/.staged-<id>`, pre-promotion checks, diff against the live server, then an explicit atomic swap with the old directory kept in `removed/`. |
 | `notify/`, `history.rs` | Notifications and webhooks; hourly metric roll-ups. |
+| `webhooks/` | Event webhooks: a bus subscriber derives events (server state, player list diffs, operations), `publish` queues one signed delivery per matching endpoint in SQLite, a worker delivers with persisted backoff, dead-lettering and auto-disable. Reuses the notification SSRF guard. Secrets in `webhook-secrets.json` (0600). See `docs/webhooks.md`. |
 | `db/` | SQLite access and numbered migrations (`db/migrations/NNNN_name.sql`). |
+
+## Desktop app
+
+`desktop/` is a separate Cargo workspace (not part of the root build) holding a Tauri v2 shell around the unchanged controller.
+`desktop/core` is plain Rust with unit tests: it picks a free loopback port, starts the bundled `moss serve --auth supabase`
+as a detached process in its own process group (so closing the app never signals it), records `{pid, port}` in `controller.json`,
+reuses a healthy controller on the next launch, and stops it with SIGTERM on request. `desktop/src-tauri` adds the window (its
+navigation is limited to the controller's own `http://127.0.0.1:<port>` origin; other links open in the system browser), the
+tray icon, single-instance handling and the quit prompt. The window gets no Tauri commands (empty capability set). See
+[desktop.md](../desktop/).
 
 ## Platform differences
 
