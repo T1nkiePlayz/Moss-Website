@@ -2,9 +2,9 @@
 import Base from '../layouts/Base.astro';
 import { REPO } from '../data/site';
 const lanes = [
-  { tag: 'Now', cls: '', t: 'Hardening', items: ['More recovery tooling (a recovery CLI)', 'Paper config editors with history', 'Release candidates on Linux and macOS'] },
-  { tag: 'Next', cls: 'next', t: 'Isolation and safe updates', items: ['Container backend (Docker or Podman) with real resource and network limits', 'Staged updates with a health-gated promotion', 'Remote backup destinations', 'Pack diff and sandboxed modded installers'] },
-  { tag: 'Later', cls: 'later', t: 'Bigger ideas', items: ['Theme editor and saved views', 'Desktop shell', 'Event workflows and multi-node', 'Public status pages', 'Other games'] },
+  { tag: 'Now', cls: '', t: 'Hardening the new pieces', items: ['Feedback from real Docker, Podman and S3-compatible providers', 'A smaller first page load', 'Release candidates on Linux and macOS'] },
+  { tag: 'Next', cls: 'next', t: 'Isolation and polish', items: ['Network limits and UDP ports for container mode', 'Visual-regression tests and blueprint sharing', 'OpenAPI freeze and an external security review', 'Signed checksums and event webhooks'] },
+  { tag: 'Later', cls: 'later', t: 'Bigger ideas', items: ['Desktop shell', 'Event workflows and multi-node', 'Extensions and an SDK', 'Public status pages', 'Other games'] },
 ];
 ---
 <Base title="Roadmap" description="Where Moss is heading.">
@@ -12,7 +12,7 @@ const lanes = [
     <div class="prose" style="max-width:none">
       <span class="kicker">Roadmap</span>
       <h1>Where Moss is heading</h1>
-      <p class="lede">Plans change with feedback. The detailed engineering plan is in the <a href={`${REPO}/blob/main/docs/PLAN.md`} rel="noopener">repository</a>; ideas and votes go in <a href={`${REPO}/issues`} rel="noopener">issues</a>.</p>
+      <p class="lede">Plans change with feedback. The milestone table is in the <a href={`${REPO}#roadmap`} rel="noopener">README</a>; ideas and votes go in <a href={`${REPO}/issues`} rel="noopener">issues</a>.</p>
     </div>
     <div class="lanes">
       {lanes.map((l) => <div class="lane"><span class={`tag ${l.cls}`}>{l.tag}</span><h3>{l.t}</h3><ul>{l.items.map((i) => <li>{i}</li>)}</ul></div>)}

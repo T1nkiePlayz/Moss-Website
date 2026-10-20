@@ -20,8 +20,6 @@ less install.sh                       # read it first
 sh install.sh --prefix "$HOME/.local" # or without --prefix for /usr/local/bin (uses sudo)
 ```
 
-While the repository is private, export `GITHUB_TOKEN` (a token that can read releases) before running it.
-
 **Homebrew**: each release ships a `moss.rb` formula with the real checksums.
 
 ```sh
@@ -32,7 +30,7 @@ brew services start moss        # data and logs under $(brew --prefix)/var/moss 
 **By hand**: download `moss-<tag>-macos-aarch64.tar.gz` (or `-x86_64`), check it with `shasum -a 256 -c SHA256SUMS.txt`
 and `gh attestation verify`, then copy `moss` somewhere on your `PATH`.
 
-### Gatekeeper
+## Gatekeeper
 
 Files downloaded with `curl` or the install script are not quarantined. A tarball downloaded in a browser is, and the
 unsigned binary is then blocked on first launch ("cannot be opened because the developer cannot be verified"). Remove the
@@ -51,9 +49,9 @@ MOSS_AUTH=dev moss serve          # no sign-in, loopback only: for trying it out
 moss doctor                       # checks data directory, port, Java and sign-in settings
 ```
 
-For real use copy `moss.env.example`, fill in the Supabase settings and owner e-mail (see `docs/supabase.md`).
+For real use, sign-in works out of the box: the release includes the sign-in settings in `.env` (the launchd steps below copy it). Open the panel, sign in, and enter the setup token Moss wrote to `<data dir>/setup-token` to become the owner. To pin the owner by e-mail instead, add `MOSS_OWNER_EMAILS=you@example.com` to that file.
 
-### launchd
+## launchd
 
 `io.moss.controller.plist` (in the tarball and in `packaging/macos/`) is a per-user LaunchAgent: `KeepAlive`, working
 directory, logs in `~/Library/Logs/Moss`, settings sourced from `~/Library/Application Support/Moss/moss.env`.
@@ -61,7 +59,7 @@ directory, logs in `~/Library/Logs/Moss`, settings sourced from `~/Library/Appli
 ```sh
 mkdir -p ~/Library/LaunchAgents ~/Library/Logs/Moss "$HOME/Library/Application Support/Moss"
 sed "s#REPLACE_ME_HOME#$HOME#g" io.moss.controller.plist > ~/Library/LaunchAgents/io.moss.controller.plist
-cp moss.env.example "$HOME/Library/Application Support/Moss/moss.env"   # edit it
+cp .env "$HOME/Library/Application Support/Moss/moss.env"   # the shipped sign-in settings; add options from moss.env.example
 launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/io.moss.controller.plist
 launchctl kickstart -k gui/$(id -u)/io.moss.controller     # restart
 launchctl bootout gui/$(id -u)/io.moss.controller           # stop
@@ -92,17 +90,3 @@ Java" dialog. **Settings > Java > Install** downloads a checksum-verified Temuri
 
 A Mac that sleeps pauses its servers: keep it awake (`caffeinate -s`, or Energy settings) for a server that should stay
 up. Moss does not change power settings for you.
-
-
-## Platform support
-
-| | Linux x86-64 | macOS (Apple silicon, Intel) |
-|---|---|---|
-| Servers, console, files, backups, schedules, content | ✅ | ✅ |
-| Survive controller restart | ✅ | ✅ |
-| Managed Temurin Java | ✅ | ✅ |
-| Per-server memory/CPU/process limits | ✅ cgroup v2 (delegated) | ➖ JVM heap only |
-| Host CPU and memory gauges | `/proc` | `libproc`, `sysctl`, `vm_stat`, `ps` |
-| Service files | systemd unit, AUR `PKGBUILD` | launchd plist, Homebrew formula |
-
-macOS binaries are built in CI and are ad-hoc signed, not notarised; see [macOS notes](../macos/).

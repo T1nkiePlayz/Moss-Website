@@ -39,16 +39,16 @@ Open the panel, create a server, accept the EULA, and (if you have no Java insta
 sudo useradd --system --home /var/lib/moss --create-home --shell /usr/sbin/nologin moss
 sudo install -m 0755 moss /usr/local/bin/moss
 sudo install -d -m 0750 -o root -g moss /etc/moss
-sudo install -m 0640 -o root -g moss moss.env.example /etc/moss/moss.env   # edit: Supabase + owner email
+sudo install -m 0640 -o root -g moss .env /etc/moss/moss.env   # sign-in settings; add options from moss.env.example if you like
 sudo install -m 0644 moss.service /etc/systemd/system/moss.service
 sudo systemctl enable --now moss
 ```
 
-The unit sets `Delegate=yes` so Moss can enforce per-server resource limits (needs systemd 254+). An Arch `PKGBUILD` lives in [`packaging/aur`](https://github.com/T1nkiePlayz/Moss/tree/main/packaging/aur).
+The unit sets `Delegate=yes` so Moss can enforce per-server resource limits (needs systemd 254+). An Arch `PKGBUILD` lives in [`packaging/aur`](https://github.com/T1nkiePlayz/Moss/blob/main/packaging/aur).
 
 ## macOS
 
-Install the tarball (or the Homebrew formula from the release), run it as a LaunchAgent/LaunchDaemon with [`packaging/macos/io.moss.controller.plist`](https://github.com/T1nkiePlayz/Moss/blob/main/packaging/macos/io.moss.controller.plist), and read [macOS notes](../macos/) for Gatekeeper, Java and what differs from Linux.
+Install the tarball (or the Homebrew formula from the release), run it as a LaunchAgent/LaunchDaemon with [`packaging/macos/io.moss.controller.plist`](https://github.com/T1nkiePlayz/Moss/blob/main/packaging/macos/io.moss.controller.plist), and read [docs/macos.md](../macos/) for Gatekeeper, Java and what differs from Linux.
 
 ## Reverse proxy
 
@@ -64,18 +64,3 @@ WebSockets and Server-Sent Events work through Caddy as is. For nginx, disable r
 
 `moss doctor` checks the data directory, disk, ports, Java, auth and CurseForge configuration.
 
-## From source
-
-Requires Rust (stable) and Node.js (LTS).
-
-```bash
-git clone https://github.com/T1nkiePlayz/Moss && cd Moss
-(cd web && npm ci && npm run build)       # the binary embeds web/dist
-cargo build --release                      # → target/release/moss
-```
-
-## Next steps
-
-- Set up login: [Sign-in with Supabase](../supabase/)
-- Every setting: [Configuration](../configuration/)
-- Read before exposing it: [Security model](../security/)

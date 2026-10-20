@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/Docs.astro
 title: "Mods and compatibility"
-description: "How Moss reads jars, checks compatibility, updates, upgrades and imports modpacks."
+description: "Jar checks, updates, staged updates, upgrades and modpacks."
 slug: mods
 ---
 
@@ -18,4 +18,7 @@ What Moss does for mods and plugins, so you do not have to learn it from a crash
 - **Upgrade Minecraft** with a per-mod verdict (ok, update available, no build for that version, unknown) before touching the server.
 - **Modpacks** in and out, with a report of anything that could not be fetched (usually CurseForge authors who disabled third-party downloads; Moss never works around that).
 
-Provider notes: CurseForge needs an API key and is rate limited and uncached by design, see [CurseForge setup](../curseforge/).
+- **Try it on a copy first.** Staged updates clone the server, apply the change on a test port, watch it start, and only offer *Promote* if it ran cleanly.
+- **Modpack updates** show a diff (added, removed, updated, config files you edited are never overwritten) and can be pinned to a version.
+
+CurseForge works without any setup and is deliberately rate limited and uncached, see [docs/curseforge.md](../curseforge/).

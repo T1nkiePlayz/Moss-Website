@@ -11,13 +11,16 @@ export const url = (p = '/') => {
 export interface DocPage { slug: string; title: string; group: string; blurb: string }
 export const DOCS: DocPage[] = [
   { slug: 'getting-started', title: 'Getting started', group: 'Start', blurb: 'Install Moss on Linux or macOS, try dev mode, run it as a service.' },
+  { slug: 'features', title: 'Features', group: 'Start', blurb: 'Everything Moss can do today.' },
+  { slug: 'sign-in', title: 'Sign-in and accounts', group: 'Start', blurb: 'Becoming the owner, roles, two-factor sign-in and API tokens.' },
   { slug: 'configuration', title: 'Configuration', group: 'Start', blurb: 'Every flag, variable and the data layout.' },
   { slug: 'macos', title: 'macOS', group: 'Start', blurb: 'Apple silicon and Intel: install, Gatekeeper, launchd, Java.' },
-  { slug: 'supabase', title: 'Sign-in with Supabase', group: 'Operate', blurb: 'Login, owners, setup token, MFA, API tokens and roles.' },
-  { slug: 'mods', title: 'Mods and compatibility', group: 'Operate', blurb: 'Jar checks, updates, upgrades and modpacks.' },
-  { slug: 'curseforge', title: 'CurseForge', group: 'Operate', blurb: 'Set up CurseForge, with limits and terms explained.' },
+  { slug: 'mods', title: 'Mods and compatibility', group: 'Operate', blurb: 'Jar checks, updates, staged updates, upgrades and modpacks.' },
+  { slug: 'curseforge', title: 'CurseForge', group: 'Operate', blurb: 'How CurseForge works in Moss, with its limits explained.' },
   { slug: 'runtimes', title: 'Runtimes', group: 'Operate', blurb: 'What you can run and how each runtime is verified.' },
-  { slug: 'security', title: 'Security model', group: 'Operate', blurb: 'What Moss protects, and what it does not yet.' },
+  { slug: 'recovery', title: 'Recovery', group: 'Operate', blurb: 'Locked out, stuck jobs, integrity checks.' },
+  { slug: 'security', title: 'Security model', group: 'Operate', blurb: 'What Moss protects, and what it does not.' },
+  { slug: 'threat-model', title: 'Threat model', group: 'Reference', blurb: 'Assets, attackers and mitigations in detail.' },
   { slug: 'architecture', title: 'Architecture', group: 'Reference', blurb: 'How servers survive controller restarts.' },
   { slug: 'api', title: 'HTTP API', group: 'Reference', blurb: 'The REST, WebSocket and SSE reference.' },
 ];

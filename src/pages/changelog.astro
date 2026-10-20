@@ -2,11 +2,22 @@
 import Base from '../layouts/Base.astro';
 import { REPO } from '../data/site';
 const entries = [
+  { v: '0.3.0', date: 'Next release', tag: 'Next', items: [
+    'Optional container isolation (Docker or Podman): one mounted folder, no capabilities, read-only root and resource limits.',
+    'Remote backup destinations: a folder or any S3-compatible storage, with checksums, retries and remote retention.',
+    'Restore to a staging folder, compare, then promote.',
+    'Staged updates: try an update on a test copy and promote it only if it starts cleanly.',
+    'Modpack updates with a diff that never overwrites edited config files, plus pack version pinning.',
+    'Forge 1.12.2 to 1.16.5.',
+    'Structured config editors with history for Paper, Spigot, Bukkit, Purpur and Velocity.',
+    'Theme editor, saved views, server blueprints, importing an existing server and cross-product search.',
+    'moss recover command line, a threat model and design notes.',
+  ] },
   { v: '0.2.0', date: 'Release candidate', tag: 'Next', items: [
     'macOS support: Apple silicon and Intel builds, launchd service file, Homebrew formula and an install script.',
     'Full mod support: jar inspection, compatibility checks, enable/disable, identify unknown files, update-all, and a Minecraft version upgrade assistant.',
     'Quilt, NeoForge and Forge runtimes; modpack import (.mrpack and CurseForge) and .mrpack export.',
-    'CurseForge content next to Modrinth, through a Supabase edge function or your own key.',
+    'CurseForge content next to Modrinth, through a built-in relay or your own key.',
     'Backups: locks, per-world listing, restore preview and selective restore; schedules with IANA time zones.',
     'Notification inbox with Discord or generic webhooks; long-term metrics; redacted support bundle.',
     'Per-server memory, CPU and process limits on Linux (cgroup v2); reinstall and repair; safer Java installs.',

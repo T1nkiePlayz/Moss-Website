@@ -30,12 +30,12 @@ const shots = [
 ];
 
 const faq = [
-  ['Do I need an account on this website?', 'No. There is nothing to sign in to here. Moss runs on your own machine, and its sign-in uses a Supabase project that you create and control.'],
-  ['Does Moss phone home?', 'No telemetry. Moss contacts Mojang, PaperMC, Purpur, Fabric, Modrinth, CurseForge (if enabled) and Adoptium only to download what you ask for, and Supabase only to verify sign-in keys.'],
+  ['Do I need an account on this website?', 'No. There is nothing to sign in to here. Moss runs on your own machine, and its sign-in works out of the box: you sign in, then claim ownership with a one-time token.'],
+  ['Does Moss phone home?', 'No telemetry. Moss contacts Mojang, PaperMC, Purpur, Fabric, Modrinth, CurseForge (if enabled) and Adoptium only to download what you ask for, and the sign-in service only to verify who is signing in.'],
   ['Is it free?', 'Yes. Moss is open source under GPL-3.0-only.'],
   ['What does it run on?', 'Linux (x86-64) and macOS 13+ (Apple silicon and Intel). Windows hosts are not supported. You manage it from any browser. Per-server memory, CPU and process limits are Linux only.'],
-  ['Do I need Docker?', 'No. Moss is a single binary with SQLite. A container backend with resource limits is on the roadmap.'],
-  ['Is it ready for production?', 'It runs real servers today, but it is early. Formats and APIs may change, and there is no container isolation yet. Keep your own backups and put a TLS reverse proxy in front of it.'],
+  ['Do I need Docker?', 'No. Moss is a single binary with SQLite. Container isolation with Docker or Podman is optional, per server.'],
+  ['Is it ready for production?', 'It runs real servers today, but it is early. Formats and APIs may change, and container isolation is new. Keep your own backups and put a TLS reverse proxy in front of it.'],
 ];
 ---
 <Base>
@@ -172,7 +172,7 @@ const faq = [
         <h2>Built to be exposed carefully</h2>
         <p class="sub">Sign-in is not the only line of defence. Moss binds to loopback by default, checks permissions on every REST call, WebSocket and event stream, confines file access to each server, and allow-lists every download.</p>
       </div>
-      <div class="callout"><b>No isolation yet.</b> Game servers and the plugins they load run as the same OS user as Moss. Run Moss as a dedicated unprivileged user, treat plugins as code you trust, and put a TLS reverse proxy in front of it. <a href={url('/docs/security/')}>Read the security model</a>.</div>
+      <div class="callout"><b>Isolation is opt-in.</b> By default, game servers and the plugins they load run as the same OS user as Moss; switch a server to container mode (Docker or Podman) to confine it. Run Moss as a dedicated unprivileged user, treat plugins as code you trust, and put a TLS reverse proxy in front of it. <a href={url('/docs/security/')}>Read the security model</a>.</div>
     </div>
   </section>
 

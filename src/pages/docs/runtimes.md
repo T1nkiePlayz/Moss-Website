@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/Docs.astro
 title: "Runtimes"
-description: "Which server types Moss can install, and how each download is verified."
+description: "What you can run and how each runtime is verified."
 slug: runtimes
 ---
 
@@ -16,7 +16,7 @@ slug: runtimes
 | Fabric | Stable | Mods | Server-side and both-side mods only |
 | Quilt | Stable | Mods | Official installer, Fabric mods work too |
 | NeoForge | Stable | Mods | Official installer; Minecraft 1.20.2+ |
-| Forge | Experimental | Mods | Official installer; Minecraft 1.17+ (older versions use a different launch scheme) |
+| Forge | Experimental | Mods | Official installer; Minecraft 1.12.2 and newer (Java 8 for 1.16.5 and older) |
 | Velocity | Stable | Proxy plugins | |
 | Custom command | Experimental | – | Admin-only; explicit argv, reduced management |
 | Simulated | Dev only | – | Fake server for demos and tests |
