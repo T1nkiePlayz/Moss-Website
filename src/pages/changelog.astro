@@ -3,6 +3,21 @@ import Base from '../layouts/Base.astro';
 import { REPO } from '../data/site';
 const entries = [
   { v: '0.3.0', date: 'Next release', tag: 'Next', items: [
+    'Other games: Minecraft Bedrock, Terraria, Factorio and sixteen SteamCMD games (Valheim, Counter-Strike 2, Counter-Strike: Source, Garry\'s Mod, Team Fortress 2, Left 4 Dead and Left 4 Dead 2, Day of Defeat: Source, Half-Life 2: Deathmatch, No More Room in Hell, Rust, ARK: Survival Evolved, 7 Days to Die, Palworld, Project Zomboid and Satisfactory), installed from official sources, with console, files, backups, schedules and player counts.',
+    'Remote admin for games: RCON set up with a generated password for Source games, Rust, Factorio, Palworld and Project Zomboid, with an online-player list and kick and ban.',
+    'Game mods: Thunderstore with BepInEx for Valheim, the Factorio mod portal, and Steam Workshop collections and maps for Garry\'s Mod and Counter-Strike 2.',
+    'Game updates: checks for new Steam builds and Factorio, Terraria and Bedrock releases; update in one click or on a schedule, with a backup first and configs and worlds kept.',
+    'Config editors for games: server.cfg, serverconfig.txt, server-settings.json, PalWorldSettings.ini, the Project Zomboid ini and moss-game.cfg, with a raw view.',
+    'Container isolation for games, with a default image per game.',
+    'Hangar, PaperMC\'s plugin repository, as a content source for Paper-family servers and Velocity; unknown files are identified by SHA-256.',
+    'Event workflows: when an event happens, run ordered actions (start, stop, restart, commands, backups, waits, notifications, web calls), with a dry run and loop protection.',
+    'Player analytics: unique players, peak, playtime, an hourly chart, a weekday-by-hour heatmap and top players, kept 90 days.',
+    'Public status pages: opt-in HTML and JSON pages that show chosen servers, their state, players and uptime without signing in.',
+    'Shared allow and ban lists for Minecraft Java and Bedrock servers; ban lists also reach running games that have an admin channel.',
+    'Live web maps (BlueMap, Dynmap, squaremap, Pl3xMap) in a Map tab and, if you choose, on the status page, through a sandboxed proxy.',
+    'The panel installs as an app and can send Web Push notifications for crashes, backups and players joining.',
+    'Profile icons from Gravatar, with initials when offline; the desktop launcher quits safely during startup, watches for crashes, retries and starts faster.',
+    'Audit and security review fixes: content and grant changes scoped to the right server, revoked access ends live streams, safer backups and restores, a locked-down map proxy, bounded RCON, and push subscriptions that cannot be taken over.',
     'Optional container isolation (Docker or Podman): one mounted folder, no capabilities, read-only root and resource limits.',
     'Remote backup destinations: a folder or any S3-compatible storage, with checksums, retries and remote retention.',
     'Restore to a staging folder, compare, then promote.',

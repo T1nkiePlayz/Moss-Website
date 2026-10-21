@@ -4,7 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { url } from '../data/site';
 interface Props { title?: string; description?: string }
-const { title, description = 'Moss is a fast, local-first controller for Minecraft Java servers: one small binary, a polished web panel, and servers that survive everything except you pulling the plug.' } = Astro.props;
+const { title, description = 'Moss is a fast, local-first controller for Minecraft and nineteen other game servers: one small binary, a polished web panel, and servers that survive everything except you pulling the plug.' } = Astro.props;
 const full = title ? `${title} · Moss` : 'Moss: game servers that keep growing, quietly';
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const og = new URL(url('/og.png'), Astro.site).href;
