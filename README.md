@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>Game servers that keep growing, quietly.</strong><br>
-  The public site for <a href="https://github.com/T1nkiePlayz/Moss">Moss</a>, the open-source Minecraft Java server controller: landing page, documentation, downloads, changelog and roadmap.
+  The public site for <a href="https://github.com/T1nkiePlayz/Moss">Moss</a>, the open-source controller for Minecraft and other game servers: landing page, documentation, downloads, changelog and roadmap.
 </p>
 
 <p align="center">
