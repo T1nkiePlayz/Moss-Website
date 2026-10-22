@@ -1,6 +1,6 @@
 export const REPO = 'https://github.com/T1nkiePlayz/Moss';
 export const SITE_REPO = 'https://github.com/T1nkiePlayz/Moss-Website';
-export const VERSION = '0.1.0';
+export const VERSION = '0.1.1';
 
 /** Prefix a site-root path with the deploy base (GitHub Pages project sites live under /<repo>/). */
 export const url = (p = '/') => {

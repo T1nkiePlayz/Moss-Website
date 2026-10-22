@@ -2,7 +2,16 @@
 import Base from '../layouts/Base.astro';
 import { REPO } from '../data/site';
 const entries = [
-  { v: '0.1.1', date: 'October 2026 · release notes in draft', tag: 'Next', items: [
+  { v: '0.1.2', date: 'October 2026 · release in progress', tag: 'Next', items: [
+    'Update Moss from the panel: administrators get a notification and a short banner when a release is out, and Settings → Updates installs it, restarts Moss and reconnects the panel while game servers keep running.',
+    'moss update installs the latest release (or --version) over the running binary with the installer\'s checks: checksum, cosign signature when cosign is installed, and a test run before the atomic swap. moss update --check only compares versions.',
+    'Optional moss-update.path and moss-update.service units let the hardened systemd setup install updates from the panel; package-managed copies show the command to run instead. MOSS_UPDATE_CHECK=false turns the check off.',
+    'One data folder wherever Moss starts: ~/.local/share/moss on Linux and ~/Library/Application Support/Moss/data on macOS. Data in an older ./moss-data, ~/moss/moss-data or ~/moss-data is still found and used.',
+    'The install script and moss update ask before reinstalling the installed release, and the script warns about an older moss earlier on your PATH.',
+    'moss doctor no longer creates a data folder where you run it or clears a running controller\'s temporary uploads.',
+    'No database migrations and no new storage formats. Upgrading from v0.1.1 means running the install script once more.',
+  ] },
+  { v: '0.1.1', date: 'October 2026', tag: 'Latest', items: [
     'Sign-in works on a fresh install: the public sign-in settings are built into the binary, so moss serve needs no config file.',
     'Search Modrinth and CurseForge modpacks from New server → From modpack; pasting a link or uploading a pack still works.',
     'Accept the Minecraft EULA now or later: a server created without it will not start until it is accepted from the server page. Velocity no longer asks for it.',
