@@ -12,9 +12,10 @@ Flags and environment variables (flags win):
 | Variable | Default | Meaning |
 |---|---|---|
 | `MOSS_BIND` / `MOSS_PORT` | `127.0.0.1` / `8420` | Listener. Keep loopback unless a TLS proxy fronts it. |
-| `MOSS_DATA_DIR` | `./moss-data` | Database, servers, backups, managed Java, cache. |
+| `MOSS_DATA_DIR` | `~/.local/share/moss` (Linux), `~/Library/Application Support/Moss/data` (macOS); an existing `./moss-data`, `~/moss/moss-data` or `~/moss-data` database wins; `./moss-data` without `HOME` | Database, servers, backups, managed Java, cache. |
+| `MOSS_UPDATE_CHECK` | `true` | Look for new Moss releases a minute after start and every 6 hours, and offer them in the panel. Dev mode never checks. |
 | `MOSS_AUTH` | `supabase` | `supabase` or `dev` (no login, loopback only). |
-| `SUPABASE_URL` / `SUPABASE_ANON_KEY` | shipped `.env` | Only to use your own sign-in project instead of the default. |
+| `SUPABASE_URL` / `SUPABASE_ANON_KEY` | built in | Only to use your own sign-in project instead of the default. Setting either one (flag, environment or `.env`) turns the built-in pair off, so set both. |
 | `SUPABASE_JWT_SECRET` | – | Only for legacy HS256-signed projects. |
 | `MOSS_OWNER_EMAILS` | – | Comma-separated emails that become owner on first verified sign-in. |
 | `MOSS_REQUIRE_VERIFIED_EMAIL` | `true` | Require a verified email before matching owner/invite. |

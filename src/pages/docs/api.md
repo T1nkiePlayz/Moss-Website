@@ -40,7 +40,7 @@ Server object:
  capabilities:string[] /* console,files,content,backups,players,properties,config,schedules */}
 ```
 - `GET /servers` → `Server[]`
-- `POST /servers {name,runtime,game_version,loader_version?,memory_mb,port?,accept_eula:boolean,flags_profile?,autostart?,custom?:{command:string[]}}` → 202 `{server,operation}`. `accept_eula` must be true for Minecraft runtimes (recorded + audited).
+- `POST /servers {name,runtime,game_version,loader_version?,memory_mb,port?,accept_eula:boolean,flags_profile?,autostart?,custom?:{command:string[]}}` → 202 `{server,operation}`. `accept_eula: true` records Minecraft EULA acceptance (audited) for runtimes that need it (Minecraft Java servers except the Velocity proxy, and Bedrock); without it the server is created but will not start until the EULA is accepted, either with `PATCH /servers/{id} {accept_eula:true}` or, for Java servers, by setting `eula=true` in the server's `eula.txt` (recorded at the next start as accepted via `eula.txt`). `memory_mb` may not exceed this machine's total memory (here and in `PATCH`, imports and blueprints).
 - `GET /servers/{id}` · `PATCH /servers/{id} {name?,memory_mb?,port?,flags_profile?,autostart?,restart_policy?,tags?,notes?,game_version?}` · `DELETE /servers/{id}?delete_data=false`
 - `POST /servers/{id}/actions/{start|stop|restart|kill}` → `{server}` (start/stop are asynchronous; watch `state`)
 - `POST /servers/{id}/command {command}` → 204
@@ -99,7 +99,7 @@ Finding: `{id,severity:"info"|"warn"|"critical",server_id|null,title,detail,evid
 - `GET /settings` → `{default_memory_mb,backup_keep,backup_before_change:boolean,modrinth_contact,public_base_url,data_dir,bind,version}` · `PUT /settings` (admin)
 
 ## Events (SSE) `GET /events?ticket=`
-`event: op` data=Operation · `event: server` data=Server · `event: activity` data=Activity · `event: hello` data `{}`. Stream resumes with `Last-Event-ID` (best effort) and sends `:` keep-alives every 15 s.
+`event: op` data=Operation · `event: server` data=Server · `event: activity` data=Activity · `event: update` data=UpdateInfo (administrators only; see Updating Moss) · `event: hello` data `{}`. Stream resumes with `Last-Event-ID` (best effort) and sends `:` keep-alives every 15 s.
 
 ## Additions
 - `PATCH /servers/{id} {accept_eula:true}` records Minecraft EULA acceptance (audited; writes `eula.txt`).
@@ -140,6 +140,7 @@ issues: Finding[]                       // per-item findings from the check belo
 - `POST /servers/{id}/upgrade {game_version, loader_version?, content:"update"|"disable_incompatible"|"keep", backup:true}` → 202 operation: stops nothing (server must be stopped, else 409), pre-change backup, replaces `server.jar`/loader files, updates `java_major`, applies the content choice, records `game_version`, timeline kind `upgrade`. The operation log names the backup id for rollback. Downgrades require `confirm_downgrade:true`.
 
 ### Modpacks
+- `GET /modpacks/search?q=&provider=modrinth|curseforge&offset=0&limit=20` → `{items:[{provider,project_id,slug,title,description,author,icon_url,downloads,game_versions:string[],loaders:string[]}],total,next_offset}`. `next_offset` is where the next page starts (null on the last page); use it rather than counting items, since CurseForge packs that cannot be distributed are left out of a page. Modpacks only (Modrinth `project_type:modpack` that run on servers, CurseForge class 4471). Same permission as inspect (admin or `manager` grant). `limit` 1-50. `curseforge` returns 409 `provider.unavailable` when not configured or not signed in. Feed `{provider,project_id}` to `POST /modpacks/inspect`.
 - `POST /modpacks/inspect` multipart (`file` = `.mrpack` or CurseForge pack `.zip`, ≤ 512 MiB) **or** JSON `{provider:"modrinth"|"curseforge", project_id, version_id?}` → `{token, format:"mrpack"|"curseforge", name, version, summary|null, game_version, loader:{id,version|null}, files:{total, server, client_only, unavailable}, unavailable:[{name,reason}], overrides:{files, size}, size:number, warnings:string[]}`. `token` is valid 30 minutes and names a temp file under `tmp/`. Unavailable = CurseForge files whose authors disabled third-party downloads (listed with their project page for manual download).
 - `POST /servers {..., "modpack_token": "<token>"}` creates the server with the pack's runtime, game version and loader, then imports it (same operation chain). `runtime` must match or be omitted.
 - `POST /servers/{id}/modpacks {token, mode:"add"|"replace"}` → 202 operation: downloads hash-verified files, extracts `overrides/` and `server-overrides/` (path-safe), installs server-side mods only, records provenance (`source:"modpack"`), pre-change backup if the setting is on.
@@ -158,7 +159,7 @@ Server object gains `limits:{memory_mb:number|null, cpu_pct:number|null, pids:nu
 - `GET /status` host gains `os: "Linux"|"macOS"`.
 
 ### Release
-Tags `v*` build and attach: `moss-<tag>-linux-x86_64.tar.gz`, `moss-<tag>-macos-aarch64.tar.gz`, `moss-<tag>-macos-x86_64.tar.gz`, `SHA256SUMS.txt`, `install.sh`, `moss.rb` (Homebrew formula with the real checksums); build attestations for each tarball.
+Tags `v*` build and attach: `moss-<tag>-linux-x86_64.tar.gz`, `moss-<tag>-macos-aarch64.tar.gz`, `moss-<tag>-macos-x86_64.tar.gz`, `SHA256SUMS.txt`, `install.sh`, `moss.rb` (Homebrew formula with the real checksums); build attestations for each tarball. `moss update` (and `install.sh`) rely on these asset names and on `<name>/moss` inside the tarball, so keep them stable.
 
 ## 0.2 additions: schedules, backups, notifications, metrics
 
@@ -173,7 +174,7 @@ Schedule gains `tz: string` (IANA name, e.g. `"Europe/Berlin"`, default `"UTC"`)
 - `POST /backups/{id}/restore` body gains `only?:string[]` (top-level names such as `["world","world_nether"]`; in-place only): restores just those entries, taking the safety backup first.
 
 ### Notifications and webhooks
-Notification: `{id, time, kind:"crash"|"crash_loop"|"backup_failed"|"disk_low"|"operation_failed"|"restart_failed"|"update_available"|"security", severity:"info"|"warn"|"critical", title, body, server_id:string|null, read:boolean}`.
+Notification: `{id, time, kind:"crash"|"crash_loop"|"backup_failed"|"disk_low"|"operation_failed"|"restart_failed"|"update_available"|"moss_update"|"security", severity:"info"|"warn"|"critical", title, body, server_id:string|null, read:boolean}` (`read` is the caller's own read state; each user marks notifications read for themselves).
 - `GET /notifications?unread=1&limit=50` → `{items:Notification[], unread:number}` (scoped to servers the caller can see; admin-only kinds hidden from others).
 - `POST /notifications/read {ids?:string[], all?:boolean}` → 204.
 - SSE event `notification` (data = Notification) on `/events`.
@@ -291,6 +292,12 @@ Outbound, signed event subscriptions; consumer guide in `docs/webhooks.md`.
 - `POST /webhooks/{id}/test` → `{delivery}`: one attempt now, even if disabled, logged but never retried or counted towards auto-disable
 - `GET /webhooks/{id}/deliveries` → `{items:[{id,event_id,type,test,state:"pending"|"delivered"|"dead",attempts,max_attempts,created_at,finished_at,next_attempt_at,status_code,latency_ms,response,error}]}` (the last 100 finished plus anything pending; `response` is truncated)
 - `POST /webhooks/{id}/deliveries/{did}/retry` → `{delivery}`; 409 `webhook.not_retryable` unless the delivery is `dead`
+
+## Updating Moss (administrators)
+- `GET /system/update` → UpdateInfo `{current, latest:string|null, available:boolean, checked_at:string|null, method:"self"|"helper"|"manual", reason:string|null, command:string|null, release_url:string|null, running:boolean}`. `latest` is what the last check found (null before the first check). `method` says how the panel can install: `self` (Moss replaces its own binary, then restarts by re-executing itself with the same PID), `helper` (the root `moss-update.path` systemd unit installs it and restarts `moss.service`), `manual` (a package manager owns the binary, or Moss cannot write it: `reason` explains, `command` is what to run on the host, when there is one).
+- `POST /system/update/check` → UpdateInfo after asking the release source now. 502 `update.lookup_failed`.
+- `POST /system/update {version?}` → 202 `{operation}` (kind `moss.update`, audited as `moss.update`). Installs the latest release, or `version` when given; only releases newer than the running one (`moss update --version` on the host goes back). 409 `update.none` when nothing newer, `update.unavailable` when `method` is `manual`, `update.running` while an update runs; 400 `validation` for a malformed version. The release is verified like `moss update` (checksum, and the cosign signature when `cosign` is installed). After a `self` update the controller restarts about 1.5 s after the operation completes: the panel reconnects and `GET /status` reports the new `version`. Game servers keep running.
+- Moss checks for a new release a minute after start and every 6 hours (`MOSS_UPDATE_CHECK=false` turns this off; dev mode never checks). A new release raises the admin-only `moss_update` notification once per version, sent to webhooks as `update.available`.
 
 ## Live maps
 

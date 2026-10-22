@@ -1,6 +1,6 @@
 export const REPO = 'https://github.com/T1nkiePlayz/Moss';
 export const SITE_REPO = 'https://github.com/T1nkiePlayz/Moss-Website';
-export const VERSION = '0.1.0';
+export const VERSION = '0.1.1';
 
 /** Prefix a site-root path with the deploy base (GitHub Pages project sites live under /<repo>/). */
 export const url = (p = '/') => {
@@ -20,6 +20,7 @@ export const DOCS: DocPage[] = [
   { slug: 'hangar', title: 'Hangar plugins', group: 'Operate', blurb: 'Browse and install plugins from PaperMC Hangar, no key needed.' },
   { slug: 'game-mods', title: 'Game mods', group: 'Operate', blurb: 'Mods for Valheim, Factorio, Garry\'s Mod and CS2.' },
   { slug: 'player-lists', title: 'Shared player lists', group: 'Operate', blurb: 'Whitelists and ban lists managed once, applied to many servers.' },
+  { slug: 'accessibility', title: 'Accessibility', group: 'Operate', blurb: 'Keyboard, screen reader and display settings, WCAG 2.2 AA target and known gaps.' },
   { slug: 'maps', title: 'Live maps', group: 'Operate', blurb: 'Web map plugins in the Map tab and on status pages.' },
   { slug: 'push', title: 'Web Push and install', group: 'Operate', blurb: 'Install the web app and get push notifications.' },
   { slug: 'runtimes', title: 'Runtimes', group: 'Operate', blurb: 'What you can run and how each runtime is verified.' },
