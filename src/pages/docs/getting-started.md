@@ -25,6 +25,14 @@ Or use the installer, which verifies the checksum and installs one file ([`scrip
 sh install.sh --prefix "$HOME/.local"
 ```
 
+Then start it and open the panel in your browser. Sign-in is built in, so no config file is needed:
+
+```bash
+mkdir -p ~/moss && cd ~/moss && moss serve   # http://127.0.0.1:8420 ; data goes to ./moss-data (or set MOSS_DATA_DIR)
+```
+
+Sign in, then enter the one-time setup token from `moss-data/setup-token` to become the owner. To keep Moss running in the background, use the service below.
+
 ## Try it without any account (development mode)
 
 ```bash
@@ -39,7 +47,7 @@ Open the panel, create a server, accept the EULA, and (if you have no Java insta
 sudo useradd --system --home /var/lib/moss --create-home --shell /usr/sbin/nologin moss
 sudo install -m 0755 moss /usr/local/bin/moss
 sudo install -d -m 0750 -o root -g moss /etc/moss
-sudo install -m 0640 -o root -g moss .env /etc/moss/moss.env   # sign-in settings; add options from moss.env.example if you like
+sudo install -m 0640 -o root -g moss .env /etc/moss/moss.env   # settings file for the unit; sign-in is built in, add options from moss.env.example if you like
 sudo install -m 0644 moss.service /etc/systemd/system/moss.service
 sudo systemctl enable --now moss
 ```

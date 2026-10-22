@@ -7,7 +7,7 @@ slug: features
 
 # Features
 
-**Servers** · Vanilla, Paper, Purpur, Folia, Fabric, Quilt, Forge, NeoForge and Velocity from official metadata, plus [other games](../runtimes/#other-games), checksum-verified where upstream publishes one · start, graceful stop, restart, force stop with escalation · crash detection with backoff and a crash-loop breaker · autostart · per-server memory, flags profile and port · **import an existing server** from a folder, zip or tar.zst · **blueprints** to create new servers from a saved recipe, shareable as a copy-and-paste code · EULA acceptance is an explicit, audited step.
+**Servers** · Vanilla, Paper, Purpur, Folia, Fabric, Quilt, Forge, NeoForge and Velocity from official metadata, plus [other games](../runtimes/#other-games), checksum-verified where upstream publishes one · start, graceful stop, restart, force stop with escalation · crash detection with backoff and a crash-loop breaker · autostart · per-server memory (capped at this machine's RAM), flags profile and port · **import an existing server** from a folder, zip or tar.zst (drag and drop; its plugins and mods are identified right away) · **blueprints** to create new servers from a saved recipe, shareable as a copy-and-paste code · EULA acceptance is an explicit, audited step: accept when creating or importing, or *skip for now* and accept later from the server page (the server will not start until you do) · install and import logs stay on the server's **Setup** tab.
 
 **Isolation and limits** · optional **container mode** (Docker or Podman): one mounted folder, no capabilities, read-only root, memory/CPU/process limits, Java provided by the image · on Linux, cgroup limits without containers · servers survive controller restarts in both modes.
 
@@ -17,17 +17,17 @@ slug: features
 
 **Content (Modrinth, CurseForge and Hangar)** · search filtered by runtime, loader and game version · dependency resolution · inventory read from the jars · enable/disable · identify unknown files by hash · compatibility panel · update-all with a reviewed plan and pinning · **staged updates on a test copy** with health-gated promotion.
 
-**Modpacks** · import `.mrpack` and CurseForge packs into a new or existing server, export `.mrpack`, **update to a newer pack version with a diff**, pin a pack version.
+**Modpacks** · **search Modrinth and CurseForge packs** right from *New server → From modpack* (or paste a link, or upload) · import `.mrpack` and CurseForge packs into a new or existing server, export `.mrpack`, **update to a newer pack version with a diff**, pin a pack version.
 
 **Version upgrades** · plan and run a Minecraft/loader upgrade with per-mod verdicts, backup and rollback; optionally try it on a copy first.
 
-**Backups** · manual and scheduled, checksummed `tar.zst`, verify, lock, world-aware listing, restore as a new server, in place or per world · **restore preview, or restore to a staging folder and promote after comparing** · **remote destinations**: a folder (for example a NAS mount) or any S3-compatible storage (AWS, Backblaze B2, Cloudflare R2, MinIO), with upload retries, checksums and remote retention.
+**Backups** · manual and scheduled, checksummed `tar.zst`, verify, lock, world-aware listing, restore as a new server, in place or per world · busy servers are never backed up into a torn file: small files are snapshotted whole and a backup restarts if a large file is cut short · **restore preview, or restore to a staging folder and promote after comparing** · **remote destinations**: a folder (for example a NAS mount) or any S3-compatible storage (AWS, Backblaze B2, Cloudflare R2, MinIO), with upload retries, checksums and remote retention.
 
-**Schedules, operations, notifications** · backup, start, stop, restart and console-command schedules in an IANA time zone (daylight-saving aware) · every long job is a persisted, cancellable operation · in-app inbox plus optional Discord or generic webhook (HTTPS, SSRF-safe).
+**Schedules, operations, notifications** · backup, start, stop, restart and console-command schedules in an IANA time zone (daylight-saving aware) · every long job is a persisted, cancellable operation · in-app inbox (read state is per user) plus optional Discord or generic webhook (HTTPS, SSRF-safe).
 
 **Monitoring** · live CPU, memory and players, long-term history (1 h to 30 d) per server and for the host · support bundle with secrets redacted.
 
-**Interface** · dark, light, system and high-contrast themes with a **theme editor** (live preview, contrast checker, import/export) · accent and density options · saved views for lists · command palette that searches servers, backups, content and files (<kbd>Ctrl</kbd>/<kbd>⌘</kbd>+<kbd>K</kbd>) · keyboard first, responsive, axe-checked in CI.
+**Interface** · fourteen themes: dark, light, system and high contrast, plus game-inspired and seasonal ones such as Nether, Synthwave, Amber terminal, Deep sea, Campfire and Cherry blossom, all checked for WCAG AA contrast · a **theme editor** (live preview, contrast checker, import/export) · accent and density options · saved views for lists · command palette that searches servers, backups, content and files (<kbd>Ctrl</kbd>/<kbd>⌘</kbd>+<kbd>K</kbd>) · **accessibility settings** (text size up to 150%, strong focus ring, always-underlined links, wider text spacing, reduced motion and effects, following the system's high-contrast request) · keyboard first, responsive, axe-checked in CI. See [Accessibility](../accessibility/).
 
 **Access and recovery** · roles and per-server grants enforced everywhere · personal API tokens · login throttling · optional MFA requirement · activity log · **`moss recover`** command line for locked-out owners, stuck operations and integrity checks.
 
@@ -47,6 +47,6 @@ slug: features
 
 **Shared player lists** · allow and ban lists defined once and applied to every subscribed Minecraft Java and Bedrock server · ban lists also reach games with an admin channel while they run, see [Player lists](../player-lists/).
 
-**Live maps** · a web map plugin (BlueMap, Dynmap, squaremap, Pl3xMap) shown in a Map tab and, if you choose, on the public status page, through a sandboxed proxy, see [Maps](../maps/).
+**Live maps** · a web map plugin (BlueMap, Dynmap, squaremap, Pl3xMap) shown in a Map tab and, if you choose, on the public status page, through a sandboxed proxy; a map link stops working as soon as its holder loses access, see [Maps](../maps/).
 
 **Installable app and push** · the panel installs as an app and sends Web Push notifications (crashes, backups, players joining) to phones and desktops, see [Push](../push/).

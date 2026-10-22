@@ -40,7 +40,7 @@ Server object:
  capabilities:string[] /* console,files,content,backups,players,properties,config,schedules */}
 ```
 - `GET /servers` → `Server[]`
-- `POST /servers {name,runtime,game_version,loader_version?,memory_mb,port?,accept_eula:boolean,flags_profile?,autostart?,custom?:{command:string[]}}` → 202 `{server,operation}`. `accept_eula` must be true for Minecraft runtimes (recorded + audited).
+- `POST /servers {name,runtime,game_version,loader_version?,memory_mb,port?,accept_eula:boolean,flags_profile?,autostart?,custom?:{command:string[]}}` → 202 `{server,operation}`. `accept_eula: true` records Minecraft EULA acceptance (audited) for runtimes that need it (Minecraft Java servers except the Velocity proxy, and Bedrock); without it the server is created but will not start until the EULA is accepted, either with `PATCH /servers/{id} {accept_eula:true}` or, for Java servers, by setting `eula=true` in the server's `eula.txt` (recorded at the next start as accepted via `eula.txt`). `memory_mb` may not exceed this machine's total memory (here and in `PATCH`, imports and blueprints).
 - `GET /servers/{id}` · `PATCH /servers/{id} {name?,memory_mb?,port?,flags_profile?,autostart?,restart_policy?,tags?,notes?,game_version?}` · `DELETE /servers/{id}?delete_data=false`
 - `POST /servers/{id}/actions/{start|stop|restart|kill}` → `{server}` (start/stop are asynchronous; watch `state`)
 - `POST /servers/{id}/command {command}` → 204
@@ -140,6 +140,7 @@ issues: Finding[]                       // per-item findings from the check belo
 - `POST /servers/{id}/upgrade {game_version, loader_version?, content:"update"|"disable_incompatible"|"keep", backup:true}` → 202 operation: stops nothing (server must be stopped, else 409), pre-change backup, replaces `server.jar`/loader files, updates `java_major`, applies the content choice, records `game_version`, timeline kind `upgrade`. The operation log names the backup id for rollback. Downgrades require `confirm_downgrade:true`.
 
 ### Modpacks
+- `GET /modpacks/search?q=&provider=modrinth|curseforge&offset=0&limit=20` → `{items:[{provider,project_id,slug,title,description,author,icon_url,downloads,game_versions:string[],loaders:string[]}],total,next_offset}`. `next_offset` is where the next page starts (null on the last page); use it rather than counting items, since CurseForge packs that cannot be distributed are left out of a page. Modpacks only (Modrinth `project_type:modpack` that run on servers, CurseForge class 4471). Same permission as inspect (admin or `manager` grant). `limit` 1-50. `curseforge` returns 409 `provider.unavailable` when not configured or not signed in. Feed `{provider,project_id}` to `POST /modpacks/inspect`.
 - `POST /modpacks/inspect` multipart (`file` = `.mrpack` or CurseForge pack `.zip`, ≤ 512 MiB) **or** JSON `{provider:"modrinth"|"curseforge", project_id, version_id?}` → `{token, format:"mrpack"|"curseforge", name, version, summary|null, game_version, loader:{id,version|null}, files:{total, server, client_only, unavailable}, unavailable:[{name,reason}], overrides:{files, size}, size:number, warnings:string[]}`. `token` is valid 30 minutes and names a temp file under `tmp/`. Unavailable = CurseForge files whose authors disabled third-party downloads (listed with their project page for manual download).
 - `POST /servers {..., "modpack_token": "<token>"}` creates the server with the pack's runtime, game version and loader, then imports it (same operation chain). `runtime` must match or be omitted.
 - `POST /servers/{id}/modpacks {token, mode:"add"|"replace"}` → 202 operation: downloads hash-verified files, extracts `overrides/` and `server-overrides/` (path-safe), installs server-side mods only, records provenance (`source:"modpack"`), pre-change backup if the setting is on.
@@ -173,7 +174,7 @@ Schedule gains `tz: string` (IANA name, e.g. `"Europe/Berlin"`, default `"UTC"`)
 - `POST /backups/{id}/restore` body gains `only?:string[]` (top-level names such as `["world","world_nether"]`; in-place only): restores just those entries, taking the safety backup first.
 
 ### Notifications and webhooks
-Notification: `{id, time, kind:"crash"|"crash_loop"|"backup_failed"|"disk_low"|"operation_failed"|"restart_failed"|"update_available"|"security", severity:"info"|"warn"|"critical", title, body, server_id:string|null, read:boolean}`.
+Notification: `{id, time, kind:"crash"|"crash_loop"|"backup_failed"|"disk_low"|"operation_failed"|"restart_failed"|"update_available"|"security", severity:"info"|"warn"|"critical", title, body, server_id:string|null, read:boolean}` (`read` is the caller's own read state; each user marks notifications read for themselves).
 - `GET /notifications?unread=1&limit=50` → `{items:Notification[], unread:number}` (scoped to servers the caller can see; admin-only kinds hidden from others).
 - `POST /notifications/read {ids?:string[], all?:boolean}` → 204.
 - SSE event `notification` (data = Notification) on `/events`.

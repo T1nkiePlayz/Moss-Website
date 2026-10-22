@@ -11,7 +11,7 @@ Moss is designed so that signing in is not the only line of defence. Read this s
 
 - **Loopback by default.** Dev auth mode refuses any other bind. A TLS reverse proxy is required for remote access.
 - **Authorisation on every call.** REST, WebSocket console, SSE stream, downloads and undo/restore go through the same per-server permission check. Servers you cannot see return *not found*.
-- **Invite-only, setup token, MFA.** A valid Supabase token is not enough; the account must be the owner or invited, with a verified email. Ownership of a fresh instance is claimed with a one-time token, not by being first. `MOSS_REQUIRE_MFA` can demand an MFA session for admins or everyone.
+- **Invite-only, setup token, MFA.** A valid Supabase token is not enough; the account must be the owner or invited, with an email that Supabase itself confirms (Moss asks Supabase directly rather than trusting what is in the token). Ownership of a fresh instance is claimed with a one-time token, not by being first. `MOSS_REQUIRE_MFA` can demand an MFA session for admins or everyone.
 - **API tokens.** Personal tokens (`moss_pat_…`) are stored as SHA-256, shown once, scoped read or full, expire, and can never manage tokens or users.
 - **Throttling.** Repeated invalid credentials from one address are rejected with 429.
 - **Files confined to the server.** Path normalisation plus a symlink check on every component; `.moss/` is unreachable; uploads are never served inline.

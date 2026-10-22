@@ -4,8 +4,12 @@ import Icon from '../components/Icon.astro';
 import { REPO, VERSION, url } from '../data/site';
 const verify = `sha256sum -c SHA256SUMS.txt      # macOS: shasum -a 256 -c SHA256SUMS.txt
 gh attestation verify moss-*-linux-x86_64.tar.gz --repo T1nkiePlayz/Moss
+# the checksum file itself is signed too (cosign, keyless):
+cosign verify-blob --bundle SHA256SUMS.txt.sigstore.json \\
+  --certificate-identity-regexp '^https://github\\.com/T1nkiePlayz/Moss/\\.github/workflows/release\\.yml@refs/(tags/v.+|heads/.+)$' \\
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com SHA256SUMS.txt
 tar xzf moss-*-linux-x86_64.tar.gz && cd moss-*-linux-x86_64
-MOSS_AUTH=dev ./moss serve`;
+./moss serve      # sign-in is built in; open http://127.0.0.1:8420`;
 const src = `git clone ${REPO} && cd Moss
 (cd web && npm ci && npm run build)
 cargo build --release`;
@@ -19,7 +23,7 @@ cargo build --release`;
       <div class="card">
         <div class="ico"><Icon name="down" /></div>
         <h3>Release tarball</h3>
-        <p>One tarball per platform: <code>linux-x86_64</code>, <code>macos-aarch64</code> and <code>macos-x86_64</code>, each with the binary, service files and an example environment file. Releases also ship SHA256SUMS, an <code>install.sh</code> that verifies the checksum, and a Homebrew formula.</p>
+        <p>One tarball per platform: <code>linux-x86_64</code>, <code>macos-aarch64</code> and <code>macos-x86_64</code>, each with the binary, service files and an example environment file. Releases also ship SHA256SUMS with a cosign signature bundle, an <code>install.sh</code> that verifies the checksum, and a Homebrew formula.</p>
         <p style="margin-top:18px"><a class="btn primary" href={`${REPO}/releases/latest`} rel="noopener">Latest release on GitHub</a></p>
       </div>
       <div class="card">
@@ -31,7 +35,7 @@ cargo build --release`;
     </div>
     <div class="prose" style="margin-top:48px;max-width:none">
       <h2 style="margin-top:0">Verify and run</h2>
-      <p>Check the checksum and the attestation before running anything you downloaded. Dev mode needs no account and only binds to loopback.</p>
+      <p>Check the checksum and the attestation before running anything you downloaded. Sign-in is built into the binary, so no config file is needed: sign in, then enter the one-time setup token from <code>moss-data/setup-token</code> to become the owner. To try it without any account, run <code>MOSS_AUTH=dev ./moss serve</code> instead (loopback only).</p>
       <pre><code>{verify}</code></pre>
       <h2>Or build it</h2>
       <pre><code>{src}</code></pre>
