@@ -1,6 +1,6 @@
 export const REPO = 'https://github.com/T1nkiePlayz/Moss';
 export const SITE_REPO = 'https://github.com/T1nkiePlayz/Moss-Website';
-export const VERSION = '0.1.1';
+export const VERSION = '0.1.2';
 
 /** Prefix a site-root path with the deploy base (GitHub Pages project sites live under /<repo>/). */
 export const url = (p = '/') => {
@@ -15,6 +15,8 @@ export const DOCS: DocPage[] = [
   { slug: 'sign-in', title: 'Sign-in and accounts', group: 'Start', blurb: 'Becoming the owner, roles, two-factor sign-in and API tokens.' },
   { slug: 'configuration', title: 'Configuration', group: 'Start', blurb: 'Every flag, variable and the data layout.' },
   { slug: 'macos', title: 'macOS', group: 'Start', blurb: 'Apple silicon and Intel: install, Gatekeeper, launchd, Java.' },
+  { slug: 'migrating', title: 'Moving to Moss', group: 'Start', blurb: 'Bring a Minecraft server over from Pterodactyl, Pelican, AMP or systemd.' },
+  { slug: 'troubleshooting', title: 'Troubleshooting', group: 'Start', blurb: 'moss doctor, health findings, common problems and support bundles.' },
   { slug: 'mods', title: 'Mods and compatibility', group: 'Operate', blurb: 'Jar checks, updates, staged updates, upgrades and modpacks.' },
   { slug: 'curseforge', title: 'CurseForge', group: 'Operate', blurb: 'How CurseForge works in Moss, with its limits explained.' },
   { slug: 'hangar', title: 'Hangar plugins', group: 'Operate', blurb: 'Browse and install plugins from PaperMC Hangar, no key needed.' },
@@ -24,6 +26,7 @@ export const DOCS: DocPage[] = [
   { slug: 'maps', title: 'Live maps', group: 'Operate', blurb: 'Web map plugins in the Map tab and on status pages.' },
   { slug: 'push', title: 'Web Push and install', group: 'Operate', blurb: 'Install the web app and get push notifications.' },
   { slug: 'runtimes', title: 'Runtimes', group: 'Operate', blurb: 'What you can run and how each runtime is verified.' },
+  { slug: 'game-compat', title: 'Game compatibility', group: 'Operate', blurb: 'The nightly end-to-end run of every SteamCMD game.' },
   { slug: 'recovery', title: 'Recovery', group: 'Operate', blurb: 'Locked out, stuck jobs, integrity checks.' },
   { slug: 'security', title: 'Security model', group: 'Operate', blurb: 'What Moss protects, and what it does not.' },
   { slug: 'threat-model', title: 'Threat model', group: 'Reference', blurb: 'Assets, attackers and mitigations in detail.' },

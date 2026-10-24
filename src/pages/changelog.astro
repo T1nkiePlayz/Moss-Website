@@ -2,7 +2,17 @@
 import Base from '../layouts/Base.astro';
 import { REPO } from '../data/site';
 const entries = [
-  { v: '0.1.2', date: 'October 2026 · release in progress', tag: 'Next', items: [
+  { v: 'Unreleased', date: 'On main, in the next release', tag: 'Next', items: [
+    'Safety backups can be copied to the remote destination too (Settings → Backups), so a failed disk no longer takes the undo points with it. They are kept separately, the newest 3 per server, and never push scheduled or manual copies out.',
+    'A size cap for local backups per server: the oldest scheduled and safety backups go first, and manual, locked and the newest backups are never removed.',
+    'A "disk will be full in about N days" health finding from the trend in the last 7 days of hourly disk history.',
+    'Console commands no longer stall behind a slow disk: database checkpoints run in the background, reads use their own connection and console audit entries are written in batches.',
+    'moss update runs as you and asks for your password only to copy the new binary into a root-owned folder such as /usr/local/bin.',
+    'Typed API clients for TypeScript and Python, generated from the frozen OpenAPI document.',
+    'New guides: moving to Moss from Pterodactyl, Pelican, AMP or systemd, and troubleshooting every moss doctor line and health finding.',
+    'Testing: a nightly end-to-end run of every SteamCMD game, a performance budget for the release binary and a coverage report on each pull request.',
+  ] },
+  { v: '0.1.2', date: 'October 2026', tag: 'Latest', items: [
     'Update Moss from the panel: administrators get a notification and a short banner when a release is out, and Settings → Updates installs it, restarts Moss and reconnects the panel while game servers keep running.',
     'moss update installs the latest release (or --version) over the running binary with the installer\'s checks: checksum, cosign signature when cosign is installed, and a test run before the atomic swap. moss update --check only compares versions.',
     'Optional moss-update.path and moss-update.service units let the hardened systemd setup install updates from the panel; package-managed copies show the command to run instead. MOSS_UPDATE_CHECK=false turns the check off.',
@@ -11,7 +21,7 @@ const entries = [
     'moss doctor no longer creates a data folder where you run it or clears a running controller\'s temporary uploads.',
     'No database migrations and no new storage formats. Upgrading from v0.1.1 means running the install script once more.',
   ] },
-  { v: '0.1.1', date: 'October 2026', tag: 'Latest', items: [
+  { v: '0.1.1', date: 'October 2026', tag: '', items: [
     'Sign-in works on a fresh install: the public sign-in settings are built into the binary, so moss serve needs no config file.',
     'Search Modrinth and CurseForge modpacks from New server → From modpack; pasting a link or uploading a pack still works.',
     'Accept the Minecraft EULA now or later: a server created without it will not start until it is accepted from the server page. Velocity no longer asks for it.',
@@ -43,7 +53,7 @@ const entries = [
       <div class="timeline">
         {entries.map((e) => (
           <article>
-            <h2 style="margin:0 0 6px;padding:0">v{e.v} <span class="tag">{e.tag}</span></h2>
+            <h2 style="margin:0 0 6px;padding:0">{/^\d/.test(e.v) ? `v${e.v}` : e.v} {e.tag && <span class="tag">{e.tag}</span>}</h2>
             <p style="margin:0 0 10px;color:var(--faint);font-size:14px">{e.date}</p>
             <ul>{e.items.map((i) => <li>{i}</li>)}</ul>
           </article>
