@@ -23,6 +23,8 @@ slug: runtimes
 
 ## Other games
 
+Whether each SteamCMD game really installs, starts and answers a player query is tracked in [Game compatibility](../game-compat/).
+
 | Game | Installed from | Platforms | Players | Notes |
 |---|---|---|---|---|
 | Minecraft Bedrock | minecraft.net (official server zip) | Linux | From the log | Needs the Minecraft EULA; `server.properties` editor |
